@@ -6,13 +6,16 @@ import com.hjy.system.entity.ActiveUser;
 import com.hjy.system.entity.TSysPerms;
 import com.hjy.system.service.TSysPermsService;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,8 +36,8 @@ public class TSysPermsController {
     /**
      * 1 跳转到新增页面
      */
-     @GetMapping(value = "/system/perms/addPage")
-     public CommonResult tSysPermsAddPage() throws FebsException {
+    @GetMapping(value = "/system/perms/addPage")
+    public CommonResult tSysPermsAddPage() throws FebsException {
         try {
             //
             return new CommonResult(200,"success","成功!",null);
@@ -43,14 +46,13 @@ public class TSysPermsController {
             log.error(message, e);
             throw new FebsException(message);
         }
-     }
+    }
     /**
      * 1 新增数据
      * @param tSysPerms 实体对象
      * @return 新增结果
      */
-    @RequiresPermissions({"perms:view"})
-//    @RequiresPermissions({"perms:add"})
+    @RequiresPermissions({"perms:add"})
     @PostMapping("/system/perms/add")
     public CommonResult tSysPermsAdd(@RequestBody TSysPerms tSysPerms, HttpSession session) throws FebsException{
         ActiveUser activeUser = (ActiveUser) session.getAttribute("activeUser");
@@ -104,8 +106,7 @@ public class TSysPermsController {
      * 3 删除数据
      * @return 删除结果
      */
-    @RequiresPermissions({"perms:view"})
-//    @RequiresPermissions({"perms:del"})
+    @RequiresPermissions({"perms:del"})
     @DeleteMapping("/system/perms/del")
     public CommonResult tSysPermsDel(@RequestBody String parm) throws FebsException{
         JSONObject jsonObject = JSON.parseObject(parm);
@@ -120,7 +121,7 @@ public class TSysPermsController {
             throw new FebsException(message);
         }
     }
-    
+
     /**
      * 4 通过主键查询单条数据
      * @return 单条数据
@@ -139,19 +140,19 @@ public class TSysPermsController {
             throw new FebsException(message);
         }
     }
-    
+
     /**
      * 4 修改数据
      * @param tSysPerms 实体对象
      * @return 修改结果
      */
-    @RequiresPermissions({"perms:view"})
-//    @RequiresPermissions({"perms:update"})
+    @RequiresPermissions({"perms:update"})
     @PutMapping("/system/perms/update")
-    public CommonResult tSysPermsUpdate(@RequestBody TSysPerms tSysPerms) throws FebsException{
+    public CommonResult tSysPermsUpdate(@RequestBody TSysPerms tSysPerms,HttpSession session) throws FebsException{
+        ActiveUser activeUser = (ActiveUser) session.getAttribute("activeUser");
         try {
             //
-            tSysPermsService.updateById(tSysPerms);
+            tSysPermsService.updateById(tSysPerms,activeUser);
             return new CommonResult(200,"success","修改成功!",null);
         } catch (Exception e) {
             String message = "修改失败";

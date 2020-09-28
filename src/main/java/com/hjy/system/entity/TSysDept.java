@@ -9,15 +9,15 @@ import java.util.Date;
  * (TSysDept)实体类
  *
  * @author makejava
- * @since 2020-09-27 17:48:11
+ * @since 2020-09-28 09:48:46
  */
 @Data
 public class TSysDept implements Serializable {
-    private static final long serialVersionUID = -49662850304706607L;
+    private static final long serialVersionUID = -68710426239434138L;
     /**
      * 部门主键id
      */
-    private String pkDeptId;
+    private Integer pkDeptId;
     /**
      * 部门名称
      */

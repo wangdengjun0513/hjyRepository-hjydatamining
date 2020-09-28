@@ -1,6 +1,9 @@
 package com.hjy.system.dao;
 
+import com.hjy.system.entity.ReDeptUser;
+import com.hjy.system.entity.ReUserRole;
 import com.hjy.system.entity.TSysDept;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,7 +21,7 @@ public interface TSysDeptMapper {
      * @param pkDeptId 主键
      * @return 实例对象
      */
-    TSysDept selectById(Object pkDeptId);
+    TSysDept selectById(String pkDeptId);
 
     /**
      * 新增数据
@@ -42,7 +45,7 @@ public interface TSysDeptMapper {
      * @param pkDeptId 主键
      * @return 影响行数
      */
-    int deleteById(Object pkDeptId);
+    int deleteById(String pkDeptId);
 
     /**
      * 查询所有行数据
@@ -57,5 +60,17 @@ public interface TSysDeptMapper {
      */
     List<TSysDept> selectAllByEntity(TSysDept tSysDept);
 
-    List<String> selectDeptName();
+
+    List<String> selectAllDeptName();
+
+    List<String> selectDeptUser_userIded();
+
+    List<String> selectDeptUserByDept(@Param("fkDeptId")String deptIdStr);
+
+    int deleteDeptUserByDeptId(@Param("fkDeptId")String fk_dept_id);
+
+    /**
+     * 批量添加部门用户
+     */
+    int addDeptUserByList(@Param("idList")List<ReDeptUser> idList);
 }

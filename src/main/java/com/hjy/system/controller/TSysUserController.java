@@ -46,8 +46,8 @@ public class TSysUserController {
     /**
      * 1 跳转到新增页面
      */
-     @GetMapping(value = "/system/user/addPage")
-     public CommonResult tSysUserAddPage() throws FebsException {
+    @GetMapping(value = "/system/user/addPage")
+    public CommonResult tSysUserAddPage() throws FebsException {
         try {
             //查询所有单位列表
             List<TSysDept> depts = tSysDeptService.selectAll();
@@ -65,7 +65,7 @@ public class TSysUserController {
             log.error(message, e);
             throw new FebsException(message);
         }
-     }
+    }
     /**
      * 1 新增数据，连带角色
      * @param param
@@ -97,7 +97,7 @@ public class TSysUserController {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("PageResult",pageResult);
             //部门
-            List<String> deptName = tSysDeptService.selectDeptName();
+            List<String> deptName = tSysDeptService.selectAllDeptName();
             jsonObject.put("depts",deptName);
             return new CommonResult(200,"success","查询数据成功!",jsonObject);
         } catch (Exception e) {
@@ -131,7 +131,7 @@ public class TSysUserController {
             throw new FebsException(message);
         }
     }
-    
+
     /**
      * 4 通过主键查询单条数据
      * @return 单条数据
@@ -156,7 +156,7 @@ public class TSysUserController {
             throw new FebsException(message);
         }
     }
-    
+
     /**
      * 4 修改数据
      * @param param 实体对象
@@ -224,7 +224,7 @@ public class TSysUserController {
     /**
      * 5 分配角色
      */
-    @RequiresPermissions({"user:distributeRole"})
+//    @RequiresPermissions({"user:distributeRole"})
     @PostMapping(value = "/system/user/distributeRole")
     public CommonResult roleDistribute(@RequestBody String parm) throws FebsException{
         JSONObject json = JSON.parseObject(parm);

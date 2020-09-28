@@ -2,23 +2,25 @@ package com.hjy.system.service.impl;
 
 import com.hjy.common.utils.IDUtils;
 import com.hjy.system.dao.TSysDeptMapper;
+import com.hjy.system.entity.ReDeptUser;
 import com.hjy.system.entity.TSysDept;
 import com.hjy.system.service.TSysDeptService;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * (TSysDept)表服务实现类
  *
- * @author liuchun
- * @since 2020-07-27 16:15:29
+ * @author makejava
+ * @since 2020-09-28 09:48:46
  */
 @Service
 public class TSysDeptServiceImpl implements TSysDeptService {
-    @Autowired
+    @Resource
     private TSysDeptMapper tSysDeptMapper;
 
     /**
@@ -28,7 +30,7 @@ public class TSysDeptServiceImpl implements TSysDeptService {
      * @return 实例对象
      */
     @Override
-    public TSysDept selectById(Object pkDeptId) throws Exception{
+    public TSysDept selectById(String pkDeptId) throws Exception {
         return this.tSysDeptMapper.selectById(pkDeptId);
     }
 
@@ -38,11 +40,9 @@ public class TSysDeptServiceImpl implements TSysDeptService {
      * @param tSysDept 实例对象
      * @return 实例对象
      */
+    @Transactional()
     @Override
-    public int insert(TSysDept tSysDept) throws Exception{
-        tSysDept.setPkDeptId(IDUtils.currentTimeMillis());
-        tSysDept.setCreateTime(new Date());
-        tSysDept.setModifyTime(new Date());
+    public int insert(TSysDept tSysDept) throws Exception {
         return tSysDeptMapper.insertSelective(tSysDept);
     }
 
@@ -52,8 +52,9 @@ public class TSysDeptServiceImpl implements TSysDeptService {
      * @param tSysDept 实例对象
      * @return 实例对象
      */
+    @Transactional()
     @Override
-    public int updateById(TSysDept tSysDept) throws Exception{
+    public int updateById(TSysDept tSysDept) throws Exception {
         return tSysDeptMapper.updateById(tSysDept);
     }
 
@@ -63,30 +64,63 @@ public class TSysDeptServiceImpl implements TSysDeptService {
      * @param pkDeptId 主键
      * @return 是否成功
      */
+    @Transactional()
     @Override
-    public int deleteById(Object pkDeptId) throws Exception{
+    public int deleteById(String pkDeptId){
         return tSysDeptMapper.deleteById(pkDeptId);
     }
-    
+
     /**
      * 查询多条数据
+     *
      * @return 对象列表
      */
     @Override
-    public List<TSysDept> selectAll() throws Exception{
+    public List<TSysDept> selectAll() throws Exception {
         return this.tSysDeptMapper.selectAll();
     }
+
     /**
      * 通过实体查询多条数据
+     *
      * @return 对象列表
      */
     @Override
-    public List<TSysDept> selectAllByEntity(TSysDept tSysDept) throws Exception{
+    public List<TSysDept> selectAllByEntity(TSysDept tSysDept) throws Exception {
         return this.tSysDeptMapper.selectAllByEntity(tSysDept);
     }
 
     @Override
-    public List<String> selectDeptName() {
-        return tSysDeptMapper.selectDeptName();
+    public List<String> selectAllDeptName() {
+        return tSysDeptMapper.selectAllDeptName();
+    }
+
+    @Override
+    public List<String> selectDeptUser_userIded() {
+        return tSysDeptMapper.selectDeptUser_userIded();
+    }
+
+    @Override
+    public List<String> selectDeptUserByDept(String deptIdStr) {
+        return tSysDeptMapper.selectDeptUserByDept(deptIdStr);
+    }
+    @Transactional()
+    @Override
+    public int deleteDeptUserByDeptId(String fk_dept_id) {
+        return tSysDeptMapper.deleteDeptUserByDeptId(fk_dept_id);
+    }
+
+    @Transactional()
+    @Override
+    public int addDeptUserByList(String fk_dept_id, List<String> idList) {
+        List<ReDeptUser> deptUsers = new ArrayList<>();
+        for (String s:idList){
+            ReDeptUser deptUser = new ReDeptUser();
+            deptUser.setPk_deptUser_id(IDUtils.currentTimeMillis());
+            deptUser.setFk_user_id(s);
+            deptUser.setFk_dept_id(fk_dept_id);
+            deptUsers.add(deptUser);
+        }
+        return tSysDeptMapper.addDeptUserByList(deptUsers);
     }
 }

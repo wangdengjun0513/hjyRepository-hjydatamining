@@ -3,14 +3,18 @@ package com.hjy.system.controller;
 import com.hjy.common.domin.CommonResult;
 import com.hjy.common.exception.FebsException;
 import com.hjy.system.entity.TSysDept;
+import com.hjy.system.entity.TSysRole;
+import com.hjy.system.entity.TSysUser;
 import com.hjy.system.service.TSysDeptService;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.hjy.system.service.TSysUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,12 +31,14 @@ public class TSysDeptController {
      */
     @Autowired
     private TSysDeptService tSysDeptService;
+    @Autowired
+    private TSysUserService tSysUserService;
 
     /**
      * 1 跳转到新增页面
      */
-     @GetMapping(value = "/system/dept/addPage")
-     public CommonResult tSysDeptAddPage() throws FebsException {
+    @GetMapping(value = "/system/dept/addPage")
+    public CommonResult tSysDeptAddPage() throws FebsException {
         try {
             //
             return new CommonResult(200,"success","成功!",null);
@@ -41,7 +47,7 @@ public class TSysDeptController {
             log.error(message, e);
             throw new FebsException(message);
         }
-     }
+    }
     /**
      * 1 新增数据
      * @param tSysDept 实体对象
@@ -65,7 +71,7 @@ public class TSysDeptController {
      * @return 所有数据
      */
     @RequiresPermissions({"dept:view"})
-    @GetMapping("/system/dept/list")
+    @PostMapping("/system/dept/list")
     public CommonResult tSysDeptList() throws FebsException{
         try {
             //
@@ -82,8 +88,7 @@ public class TSysDeptController {
      * 3 删除数据
      * @return 删除结果
      */
-    @RequiresPermissions({"dept:view"})
-//    @RequiresPermissions({"dept:del"})
+    @RequiresPermissions({"dept:del"})
     @DeleteMapping("/system/dept/del")
     public CommonResult tSysDeptDel(@RequestBody String parm) throws FebsException{
         JSONObject jsonObject = JSON.parseObject(parm);
@@ -98,7 +103,56 @@ public class TSysDeptController {
             throw new FebsException(message);
         }
     }
-    
+    /**
+     * 6 给部门下发用户
+     */
+    @PostMapping("/system/dept/addUserUI")
+    public CommonResult systemRoleAddUserUI(@RequestBody String parm) throws FebsException{
+        JSONObject json = JSON.parseObject(parm);
+        String deptIdStr=String.valueOf(json.get("fk_dept_id"));
+        JSONObject jsonObject = new JSONObject();
+        try {
+            //通过deptIdStr查找部门
+            TSysDept tSysDept = tSysDeptService.selectById(deptIdStr);
+            jsonObject.put("dept",tSysDept);
+            //查找所有用户
+            List<TSysUser> tSysUserList = tSysUserService.selectAll();
+            jsonObject.put("userList",tSysUserList);
+            //查询已分配的用户部门并进行回显
+            List<String> userRoleList = tSysDeptService.selectDeptUser_userIded();
+            List<String> userRoleList2 = tSysDeptService.selectDeptUserByDept(deptIdStr);
+            jsonObject.put("ids",userRoleList);
+            jsonObject.put("idsFP",userRoleList2);
+            return new CommonResult(200,"success","获取部门已分配用户成功!",jsonObject);
+        } catch (Exception e) {
+            String message = "获取部门已分配用户失败";
+            log.error(message, e);
+            throw new FebsException(message);
+        }
+    }
+    /**
+     * 6 给部门下发用户
+     */
+    @RequiresPermissions({"dept:addUser"})
+    @PostMapping("/system/dept/addUser")
+    public CommonResult systemRoleAddUser(@RequestBody String parm) throws FebsException{
+        JSONObject jsonObject = JSON.parseObject(parm);
+        String fk_dept_id=String.valueOf(jsonObject.get("fk_dept_id"));
+        JSONArray jsonArray = jsonObject.getJSONArray("ids");
+        String userIdsStr = jsonArray.toString();
+        List<String> idList = JSONArray.parseArray(userIdsStr,String.class);
+        try {
+            //删除原有的部门及用户角色
+            tSysDeptService.deleteDeptUserByDeptId(fk_dept_id);
+            //添加部门用户
+            tSysDeptService.addDeptUserByList(fk_dept_id,idList);
+            return new CommonResult(200,"success","部门添加用户成功!",jsonObject);
+        } catch (Exception e) {
+            String message = "部门添加用户失败";
+            log.error(message, e);
+            throw new FebsException(message);
+        }
+    }
     /**
      * 4 通过主键查询单条数据
      * @return 单条数据
@@ -117,14 +171,13 @@ public class TSysDeptController {
             throw new FebsException(message);
         }
     }
-    
+
     /**
      * 4 修改数据
      * @param tSysDept 实体对象
      * @return 修改结果
      */
-    @RequiresPermissions({"dept:view"})
-//    @RequiresPermissions({"dept:update"})
+    @RequiresPermissions({"dept:update"})
     @PutMapping("/system/dept/update")
     public CommonResult tSysDeptUpdate(@RequestBody TSysDept tSysDept) throws FebsException{
         try {

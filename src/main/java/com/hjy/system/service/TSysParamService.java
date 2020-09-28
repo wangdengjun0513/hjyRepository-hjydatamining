@@ -28,11 +28,9 @@ public interface TSysParamService {
      * 查询所有数据
      * @return list
      */
-     List<TSysParam> selectAll() throws Exception;
+    List<TSysParam> selectAll() throws Exception;
 
-     TSysParam selectById(String pkParamId) throws Exception;
+    TSysParam selectById(String pkParamId) throws Exception;
 
-     String selectParamById(String pkParamId);
-    //查询预警所需的参数值
-    List<TSysParam> selectWarningParam();
+    String selectParamById(String pkParamId);
 }

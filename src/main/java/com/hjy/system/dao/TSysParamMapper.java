@@ -2,6 +2,7 @@ package com.hjy.system.dao;
 
 import com.hjy.system.entity.TSysParam;
 import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -29,6 +30,10 @@ public interface TSysParamMapper {
     TSysParam selectById(@Param("pkParamId") String pkParamId);
     //根据参数主键查询参数值
     String selectParamById(@Param("pkParamId") String pkParamId);
-    //查询预警所需的参数值
-    List<TSysParam> selectWarningParam();
+
+    int insertSelective(TSysParam tSysParam);
+
+    int deleteById(String pkParamId);
+
+    List<TSysParam> selectAllByEntity(TSysParam tSysParam);
 }

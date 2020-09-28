@@ -39,9 +39,9 @@ public class SysToken implements Serializable {
      */
     private String fullName;
     /**
-     * policeNum
+     * idcard
      */
-    private String policeNum;
+    private String idcard;
     /**
      * 过期时间
      */

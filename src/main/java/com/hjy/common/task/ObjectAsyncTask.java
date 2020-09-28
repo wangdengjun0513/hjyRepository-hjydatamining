@@ -24,7 +24,6 @@ public class ObjectAsyncTask {
 
     private static ObjectAsyncTask ntClient;
 
-
     public static void addUserRoleByUserRole(String pkUserId, String roleId) {
         ReUserRole userRole = new ReUserRole();
         userRole.setPk_userRole_id(IDUtils.currentTimeMillis());
@@ -36,6 +35,7 @@ public class ObjectAsyncTask {
     public static void deleteRolePermsByRoleId(String fk_role_id) {
         ntClient.tSysRoleService.deleteRolePermsByRoleId(fk_role_id);
     }
+
     //添加角色默认的权限-即主页的3个
     public static void addDefultRoelPerms(String fk_role_id) {
         List<String> idList = new ArrayList<>();
@@ -44,8 +44,6 @@ public class ObjectAsyncTask {
         idList.add("1596707062416");
         ntClient.tSysRoleService.distributeMenu(fk_role_id,idList);
     }
-
-
 
     //初始化所有服务
     @PostConstruct

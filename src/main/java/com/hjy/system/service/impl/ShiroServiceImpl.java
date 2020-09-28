@@ -8,9 +8,9 @@ import com.hjy.system.dao.TSysTokenMapper;
 import com.hjy.system.dao.TSysUserMapper;
 import com.hjy.system.entity.*;
 import com.hjy.system.service.ShiroService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Author 大誌
+ * @Author liuchun
  * @Date 2019/3/30 22:18
  * @Version 1.0
  */
@@ -29,11 +29,11 @@ public class ShiroServiceImpl implements ShiroService {
     //24小时后失效
     private final static int EXPIRE = 24;
 
-    @Resource
+    @Autowired
     private TSysUserMapper tSysUserMapper;
-    @Resource
+    @Autowired
     private TSysRoleMapper tSysRoleMapper;
-    @Resource
+    @Autowired
     private TSysTokenMapper tSysTokenMapper;
     /**
      * 根据userid查找角色
@@ -126,6 +126,7 @@ public class ShiroServiceImpl implements ShiroService {
             tokenEntity.setPassword(tSysUser.getPassword());
             tokenEntity.setIp(tSysUser.getIp());
             tokenEntity.setFullName(tSysUser.getFullName());
+            tokenEntity.setIdcard(tSysUser.getIdcard());
             tSysTokenMapper.insertToken(tokenEntity);
         } else {
             //更新token
@@ -139,7 +140,6 @@ public class ShiroServiceImpl implements ShiroService {
         result.put("expire", expireTime);
         return result;
     }
-
 
     @Override
     public SysToken findByToken(String accessToken) {

@@ -1,10 +1,10 @@
 package com.hjy.system.service;
 
+import com.hjy.common.domin.CommonResult;
 import com.hjy.common.utils.page.PageResult;
 import com.hjy.system.entity.ActiveUser;
 import com.hjy.system.entity.ReUserRole;
 import com.hjy.system.entity.TSysUser;
-
 import java.util.List;
 import java.util.Map;
 
@@ -44,18 +44,18 @@ public interface TSysUserService {
      * @param pkUserId 主键
      * @return 是否成功
      */
-    int deleteById(String pkUserId) throws Exception;
+    int deleteById(String pkUserId);
 
     /**
      * 查询所有数据
      * @return list
      */
-     List<TSysUser> selectAll() throws Exception;
-     /**
+    List<TSysUser> selectAll() throws Exception;
+    /**
      * 通过实体查询所有数据
      * @return list
      */
-     List<TSysUser> selectAllByEntity(TSysUser tSysUser)throws Exception;
+    List<TSysUser> selectAllByEntity(TSysUser tSysUser)throws Exception;
     /**
      * 通过userId查询已分配角色数据
      */
@@ -83,4 +83,8 @@ public interface TSysUserService {
     int updateUser(String param);
 
     void addUserRoleByUserRole(ReUserRole userRole);
+
+//    CommonResult distributeRole(String parm);
+//
+//    CommonResult userDel(String param);
 }

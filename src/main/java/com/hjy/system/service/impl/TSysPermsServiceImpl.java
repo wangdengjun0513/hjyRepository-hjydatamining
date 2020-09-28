@@ -1,11 +1,13 @@
 package com.hjy.system.service.impl;
 
 import com.hjy.common.utils.IDUtils;
+import com.hjy.system.entity.ActiveUser;
 import com.hjy.system.entity.TSysPerms;
 import com.hjy.system.dao.TSysPermsMapper;
 import com.hjy.system.service.TSysPermsService;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -23,6 +25,7 @@ public class TSysPermsServiceImpl implements TSysPermsService {
 
     /**
      * 通过ID查询单条数据
+     *
      * @param pkPermsId 主键
      * @return 实例对象
      */
@@ -33,9 +36,11 @@ public class TSysPermsServiceImpl implements TSysPermsService {
 
     /**
      * 新增数据
+     *
      * @param tSysPerms 实例对象
      * @return 实例对象
      */
+    @Transactional()
     @Override
     public int insert(TSysPerms tSysPerms) {
         tSysPerms.setPkPermsId(IDUtils.currentTimeMillis());
@@ -46,27 +51,31 @@ public class TSysPermsServiceImpl implements TSysPermsService {
 
     /**
      * 修改数据
+     *
      * @param tSysPerms 实例对象
      * @return 实例对象
      */
+    @Transactional()
     @Override
-    public int updateById(TSysPerms tSysPerms) {
+    public int updateById(TSysPerms tSysPerms, ActiveUser activeUser) {
         tSysPerms.setModifyTime(new Date());
         //修改人
-//        tSysPerms.setModifyUsername();
-//        tSysPerms.setFkUserId();
+        tSysPerms.setModifyUsername(activeUser.getFullName());
+        tSysPerms.setFkUserId(activeUser.getUserId());
         return tSysPermsMapper.updateById(tSysPerms);
     }
 
     /**
      * 通过主键删除数据
+     *
      * @return 是否成功
      */
+    @Transactional()
     @Override
     public int deleteById(String pk_perms_id) {
         return tSysPermsMapper.deleteById(pk_perms_id);
     }
-    
+
     /**
      * 查询多条数据
      * @return 对象列表

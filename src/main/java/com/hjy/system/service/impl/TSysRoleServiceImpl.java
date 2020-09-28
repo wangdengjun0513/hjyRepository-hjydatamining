@@ -1,5 +1,9 @@
 package com.hjy.system.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.hjy.common.domin.CommonResult;
 import com.hjy.common.task.ObjectAsyncTask;
 import com.hjy.common.utils.IDUtils;
 import com.hjy.system.entity.ReRolePerms;
@@ -8,8 +12,9 @@ import com.hjy.system.entity.TSysRole;
 import com.hjy.system.dao.TSysRoleMapper;
 import com.hjy.system.service.TSysRoleService;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,8 +27,10 @@ import java.util.List;
  */
 @Service
 public class TSysRoleServiceImpl implements TSysRoleService {
-    @Resource
+    @Autowired
     private TSysRoleMapper tSysRoleMapper;
+    @Autowired
+    private TSysRoleService tSysRoleService;
 
     /**
      * 通过ID查询单条数据
@@ -42,6 +49,7 @@ public class TSysRoleServiceImpl implements TSysRoleService {
      * @param tSysRole 实例对象
      * @return 实例对象
      */
+    @Transactional()
     @Override
     public void insert(TSysRole tSysRole) {
         //通过工具类IDUtils获取主键
@@ -61,6 +69,7 @@ public class TSysRoleServiceImpl implements TSysRoleService {
      * @param tSysRole 实例对象
      * @return 实例对象
      */
+    @Transactional()
     @Override
     public int updateById(TSysRole tSysRole) {
         tSysRole.setModifyTime(new Date());
@@ -73,11 +82,12 @@ public class TSysRoleServiceImpl implements TSysRoleService {
      * @param pkRoleId 主键
      * @return 是否成功
      */
+    @Transactional()
     @Override
     public int deleteById(String pkRoleId) {
         return tSysRoleMapper.deleteById(pkRoleId);
     }
-    
+
     /**
      * 查询多条数据
      * @return 对象列表
@@ -94,12 +104,12 @@ public class TSysRoleServiceImpl implements TSysRoleService {
     public List<TSysRole> selectAllByEntity(TSysRole tSysRole) {
         return this.tSysRoleMapper.selectAllByEntity(tSysRole);
     }
-
+    @Transactional()
     @Override
     public int deleteRolePermsByRoleId(String fk_role_id) {
         return tSysRoleMapper.deleteRolePermsByRoleId(fk_role_id);
     }
-
+    @Transactional()
     @Override
     public int addRoleMenu(String fk_role_id,String str1) {
         //此处字符串比正常数组多出一对[],要先去除；
@@ -120,7 +130,7 @@ public class TSysRoleServiceImpl implements TSysRoleService {
         }
         return i;
     }
-
+    @Transactional()
     @Override
     public int addRoleMenuByList(String fk_role_id, List<String> idList) {
         List<ReRolePerms> rolePermsList = new ArrayList<>();
@@ -139,11 +149,13 @@ public class TSysRoleServiceImpl implements TSysRoleService {
         return tSysRoleMapper.selectUserRoleByrole_id(fk_role_id);
     }
 
+    @Transactional()
     @Override
     public int deleteUserRoleByRoleId(String fk_role_id) {
         return tSysRoleMapper.deleteUserRoleByRoleId(fk_role_id);
     }
 
+    @Transactional()
     @Override
     public int addUserRole(String fk_role_id, String userIds) {
         //此处字符串比正常数组多出一对[],要先去除；
@@ -166,6 +178,7 @@ public class TSysRoleServiceImpl implements TSysRoleService {
         return i;
     }
 
+    @Transactional()
     @Override
     public int addUserRoleByList(String fk_role_id, List<String> idList) {
         List<ReUserRole> userRoles = new ArrayList<>();
@@ -176,9 +189,10 @@ public class TSysRoleServiceImpl implements TSysRoleService {
             userRole.setFk_role_id(fk_role_id);
             userRoles.add(userRole);
         }
-       return tSysRoleMapper.addUserRoleByList(userRoles);
+        return tSysRoleMapper.addUserRoleByList(userRoles);
     }
 
+    @Transactional()
     @Override
     public int addUserRoleByUserRole(ReUserRole userRole) {
         return tSysRoleMapper.addUserRoleByUserRole(userRole);
@@ -199,6 +213,7 @@ public class TSysRoleServiceImpl implements TSysRoleService {
         return tSysRoleMapper.selectRoleIdByUserId(idStr);
     }
 
+    @Transactional()
     @Override
     public void distributeMenu(String fk_role_id, List<String> idList) {
         if(idList != null){
@@ -215,5 +230,45 @@ public class TSysRoleServiceImpl implements TSysRoleService {
             rolePermsList.add(rolePerms);
         }
         tSysRoleMapper.addRoleMenuByList(rolePermsList);
+    }
+
+    @Transactional()
+    @Override
+    public CommonResult systemRoleAddUser(String parm) {
+        JSONObject jsonObject = JSON.parseObject(parm);
+        String fk_role_id=String.valueOf(jsonObject.get("fk_role_id"));
+        JSONArray jsonArray = jsonObject.getJSONArray("ids");
+        String userIdsStr = jsonArray.toString();
+        List<String> idList = JSONArray.parseArray(userIdsStr,String.class);
+        //删除原有的用户角色
+        int i = tSysRoleService.deleteUserRoleByRoleId(fk_role_id);
+        //添加用户角色
+        int j = tSysRoleService.addUserRoleByList(fk_role_id,idList);
+        if(i>0 && j>0){
+            return new CommonResult(200,"success","角色添加用户成功!",null);
+        }else {
+            return new CommonResult(444,"error","角色添加用户失败!",null);
+        }
+    }
+
+    @Transactional()
+    @Override
+    public CommonResult roleDel(String parm) {
+        JSONObject jsonObject = JSON.parseObject(parm);
+        String idStr=String.valueOf(jsonObject.get("pk_id"));
+        if(idStr.equals("1595564064909") || idStr.equals("1598010216782")){
+            return new CommonResult(444,"error","超级管理员和普通用户不可删除!",null);
+        }
+        //删除角色表里的数据
+        int i = tSysRoleService.deleteById(idStr);
+        //删除用户角色表里的数据
+        int j = tSysRoleService.deleteUserRoleByRoleId(idStr);
+        //删除角色权限表里的数据
+        int k = tSysRoleService.deleteRolePermsByRoleId(idStr);
+        if(i > 0 && j > 0 && k > 0){
+            return new CommonResult(200,"success","角色删除成功!",null);
+        }else {
+            return new CommonResult(444,"error","角色删除失败!",null);
+        }
     }
 }

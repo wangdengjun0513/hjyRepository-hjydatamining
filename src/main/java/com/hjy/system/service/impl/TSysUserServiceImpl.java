@@ -82,7 +82,7 @@ public class TSysUserServiceImpl implements TSysUserService {
      * @return 是否成功
      */
     @Override
-    public int deleteById(String pkUserId) throws Exception{
+    public int deleteById(String pkUserId){
         return tSysUserMapper.deleteById(pkUserId);
     }
 
@@ -228,10 +228,12 @@ public class TSysUserServiceImpl implements TSysUserService {
         JSONObject json = JSON.parseObject(param);
         TSysUser user = new TSysUser();
         //用户基本信息
-        String pkUserId = String.valueOf(json.get("pkUserId"));
+        String pkUserId = JsonUtil.getStringParam(json,"pkUserId");
         user.setPkUserId(pkUserId);
         String username = JsonUtil.getStringParam(json,"username");
         user.setUsername(username);
+        String fkDeptId = JsonUtil.getStringParam(json,"fkDeptId");
+        user.setFkDeptId(fkDeptId);
         String email = JsonUtil.getStringParam(json,"email");
         user.setEmail(email);
         String tel = JsonUtil.getStringParam(json,"tel");
@@ -240,15 +242,16 @@ public class TSysUserServiceImpl implements TSysUserService {
         user.setIdcard(IDcard);
         String fullName = JsonUtil.getStringParam(json,"fullName");
         user.setFullName(fullName);
-        String policeNum = JsonUtil.getStringParam(json,"policeNum");
-        String unit = JsonUtil.getStringParam(json,"unit");
+        String workPosition = JsonUtil.getStringParam(json,"workPosition");
+        user.setWorkPosition(workPosition);
+        String workContent = JsonUtil.getStringParam(json,"workContent");
+        user.setWorkContent(workContent);
         String ip = JsonUtil.getStringParam(json,"ip");
         user.setIp(ip);
         String address = JsonUtil.getStringParam(json,"address");
-        user.setIp(ip);
+        user.setAddress(address);
         String enableStatus = JsonUtil.getStringParam(json,"enableStatus");
         user.setEnableStatus(enableStatus);
-        user.setAddress(address);
         user.setModifyTime(new Date());
         String fkRoleId = JsonUtil.getStringParam(json,"roleId");
         //修改用户信息

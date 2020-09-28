@@ -15,7 +15,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,8 +40,8 @@ public class TSysRoleController {
     /**
      * 1 跳转到新增页面
      */
-     @GetMapping(value = "/system/role/addPage")
-     public CommonResult tSysRoleAddPage() throws FebsException{
+    @GetMapping(value = "/system/role/addPage")
+    public CommonResult tSysRoleAddPage() throws FebsException{
         try {
             //
             return new CommonResult(200,"success","成功!",null);
@@ -50,14 +50,13 @@ public class TSysRoleController {
             log.error(message, e);
             throw new FebsException(message);
         }
-     }
+    }
     /**
      * 1 新增数据
      * @param tSysRole 实体对象
      * @return 新增结果
      */
-    @RequiresPermissions({"role:view"})
-//    @RequiresPermissions({"role:add"})
+    @RequiresPermissions({"role:add"})
     @PostMapping("/system/role/add")
     public CommonResult tSysRoleAdd(@RequestBody TSysRole tSysRole) throws FebsException{
         try {
@@ -111,30 +110,19 @@ public class TSysRoleController {
      * 3 删除数据
      * @return 删除结果
      */
-    @RequiresPermissions({"role:view"})
-//    @RequiresPermissions({"role:del"})
+    @RequiresPermissions({"role:del"})
     @DeleteMapping("/system/role/del")
     public CommonResult tSysRoleDel(@RequestBody String parm) throws FebsException{
-        JSONObject jsonObject = JSON.parseObject(parm);
-        String idStr=String.valueOf(jsonObject.get("pk_id"));
-        if(idStr.equals("1595564064909") || idStr.equals("1598010216782")){
-            return new CommonResult(444,"error","超级管理员和普通用户不可删除!",null);
-        }
         try {
-            //删除角色表里的数据
-            tSysRoleService.deleteById(idStr);
-            //删除用户角色表里的数据
-            tSysRoleService.deleteUserRoleByRoleId(idStr);
-            //删除角色权限表里的数据
-            tSysRoleService.deleteRolePermsByRoleId(idStr);
-            return new CommonResult(200,"success","数据删除成功!",null);
+            CommonResult commonResult = tSysRoleService.roleDel(parm);
+            return commonResult;
         } catch (Exception e) {
             String message = "数据删除失败";
             log.error(message, e);
             throw new FebsException(message);
         }
     }
-    
+
     /**
      * 4 通过主键查询单条数据
      * @return 单条数据
@@ -153,14 +141,13 @@ public class TSysRoleController {
             throw new FebsException(message);
         }
     }
-    
+
     /**
      * 4 修改数据
      * @param tSysRole 实体对象
      * @return 修改结果
      */
-    @RequiresPermissions({"role:view"})
-//    @RequiresPermissions({"role:update"})
+    @RequiresPermissions({"role:update"})
     @PutMapping("/system/role/update")
     public CommonResult tSysRoleUpdate(@RequestBody TSysRole tSysRole) throws FebsException{
         if("1595564064909".equals(tSysRole.getPkRoleId()) || "1598010216782".equals(tSysRole.getPkRoleId())){
@@ -204,14 +191,13 @@ public class TSysRoleController {
     /**
      * 5 给角色分配菜单权限
      */
-    @RequiresPermissions({"role:view"})
-//    @RequiresPermissions({"role:distributePerms"})
+    @RequiresPermissions({"role:distributePerms"})
     @PostMapping("/system/role/distribute")
     public CommonResult FPRoleMenu(@RequestBody String parm) throws FebsException{
         JSONObject json = JSON.parseObject(parm);
         String fk_role_id=String.valueOf(json.get("fk_role_id"));
         if(fk_role_id.equals("1595564064909")){
-
+            return new CommonResult(444,"error","超级管理员的权限不可更改!",null);
         }
         JSONArray jsonArray = json.getJSONArray("ids");
         String permsIdsStr = jsonArray.toString();
@@ -255,21 +241,12 @@ public class TSysRoleController {
     /**
      * 6 给角色下发用户
      */
-    @RequiresPermissions({"role:view"})
-//    @RequiresPermissions({"role:addUser"})
+    @RequiresPermissions({"role:addUser"})
     @PostMapping("/system/role/addUser")
     public CommonResult systemRoleAddUser(@RequestBody String parm) throws FebsException{
-        JSONObject jsonObject = JSON.parseObject(parm);
-        String fk_role_id=String.valueOf(jsonObject.get("fk_role_id"));
-        JSONArray jsonArray = jsonObject.getJSONArray("ids");
-        String userIdsStr = jsonArray.toString();
-        List<String> idList = JSONArray.parseArray(userIdsStr,String.class);
         try {
-            //删除原有的用户角色
-            tSysRoleService.deleteUserRoleByRoleId(fk_role_id);
-            //添加用户角色
-            tSysRoleService.addUserRoleByList(fk_role_id,idList);
-            return new CommonResult(200,"success","角色添加用户成功!",jsonObject);
+            CommonResult commonResult = tSysRoleService.systemRoleAddUser(parm);
+            return commonResult;
         } catch (Exception e) {
             String message = "角色添加用户失败";
             log.error(message, e);

@@ -1,5 +1,6 @@
 package com.hjy.system.service;
 
+import com.hjy.common.domin.CommonResult;
 import com.hjy.system.entity.ReUserRole;
 import com.hjy.system.entity.TSysRole;
 import java.util.List;
@@ -48,12 +49,12 @@ public interface TSysRoleService {
      * 查询所有数据
      * @return list
      */
-     List<TSysRole> selectAll();
-     /**
+    List<TSysRole> selectAll();
+    /**
      * 通过实体查询所有数据
      * @return list
      */
-     List<TSysRole> selectAllByEntity(TSysRole tSysRole);
+    List<TSysRole> selectAllByEntity(TSysRole tSysRole);
     /**
      * 通过role_id删除原有的perms
      */
@@ -92,4 +93,8 @@ public interface TSysRoleService {
     String selectRoleIdByUserId(String idStr);
 
     void distributeMenu(String fk_role_id, List<String> idList);
+
+    CommonResult systemRoleAddUser(String parm);
+
+    CommonResult roleDel(String parm);
 }

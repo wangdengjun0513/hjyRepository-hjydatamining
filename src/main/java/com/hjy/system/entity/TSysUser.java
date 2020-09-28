@@ -9,11 +9,11 @@ import java.util.Date;
  * (TSysUser)实体类
  *
  * @author makejava
- * @since 2020-09-27 17:53:36
+ * @since 2020-09-28 09:48:47
  */
 @Data
 public class TSysUser implements Serializable {
-    private static final long serialVersionUID = 786717923782853729L;
+    private static final long serialVersionUID = -33905200480123950L;
     /**
      * 主键id
      */
@@ -63,10 +63,6 @@ public class TSysUser implements Serializable {
      */
     private String fullName;
     /**
-     * ip
-     */
-    private String ip;
-    /**
      * 联系地址
      */
     private String address;
@@ -78,7 +74,8 @@ public class TSysUser implements Serializable {
      * 工作内容
      */
     private String workContent;
-
-    private int startRow;
-    private int endRow;
+    /**
+     * ip
+     */
+    private String ip;
 }

@@ -1,5 +1,6 @@
 package com.hjy.system.service;
 
+import com.hjy.system.entity.ActiveUser;
 import com.hjy.system.entity.TSysPerms;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public interface TSysPermsService {
      * @param tSysPerms 实例对象
      * @return 实例对象
      */
-    int updateById(TSysPerms tSysPerms);
+    int updateById(TSysPerms tSysPerms, ActiveUser activeUser);
 
     /**
      * 通过主键删除数据
@@ -46,12 +47,12 @@ public interface TSysPermsService {
      * 查询所有数据
      * @return list
      */
-     List<TSysPerms> selectAll();
-     /**
+    List<TSysPerms> selectAll();
+    /**
      * 通过实体查询所有数据
      * @return list
      */
-     List<TSysPerms> selectAllByEntity(TSysPerms tSysPerms);
+    List<TSysPerms> selectAllByEntity(TSysPerms tSysPerms);
 
     List<String> selectDistributeByrole_id(String roleIdStr);
 }

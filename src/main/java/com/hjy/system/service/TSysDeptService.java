@@ -1,5 +1,6 @@
 package com.hjy.system.service;
 
+import com.hjy.common.domin.CommonResult;
 import com.hjy.system.entity.TSysDept;
 
 import java.util.List;
@@ -7,8 +8,8 @@ import java.util.List;
 /**
  * (TSysDept)表服务接口
  *
- * @author liuchun
- * @since 2020-07-27 16:15:29
+ * @author makejava
+ * @since 2020-09-28 09:48:46
  */
 public interface TSysDeptService {
 
@@ -18,11 +19,12 @@ public interface TSysDeptService {
      * @param pkDeptId 主键
      * @return 实例对象
      */
-    TSysDept selectById(Object pkDeptId)throws Exception;
+    TSysDept selectById(String pkDeptId) throws Exception;
 
 
     /**
      * 新增数据
+     *
      * @param tSysDept 实例对象
      * @return 实例对象
      */
@@ -42,19 +44,33 @@ public interface TSysDeptService {
      * @param pkDeptId 主键
      * @return 是否成功
      */
-    int deleteById(Object pkDeptId) throws Exception;
+    int deleteById(String pkDeptId);
 
     /**
      * 查询所有数据
+     *
      * @return list
      */
-     List<TSysDept> selectAll() throws Exception;
-     /**
+    List<TSysDept> selectAll() throws Exception;
+
+    /**
      * 通过实体查询所有数据
+     *
      * @return list
      */
-     List<TSysDept> selectAllByEntity(TSysDept tSysDept)throws Exception;
+    List<TSysDept> selectAllByEntity(TSysDept tSysDept) throws Exception;
 
-    List<String> selectDeptName();
+    List<String> selectAllDeptName();
 
+    List<String> selectDeptUser_userIded();
+
+    List<String> selectDeptUserByDept(String deptIdStr);
+    //删除原有的部门及用户角色
+    int deleteDeptUserByDeptId(String fk_dept_id);
+    //添加部门用户
+    int addDeptUserByList(String fk_dept_id, List<String> idList);
+
+//    CommonResult addUser(String parm);
+//
+//    CommonResult deptDel(String parm);
 }

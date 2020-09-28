@@ -227,5 +227,4 @@
     <select id="selectAllUsername" resultType="java.lang.String">
         select username from t_sys_user
     </select>
-
 </mapper>

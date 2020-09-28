@@ -2,6 +2,7 @@ package com.hjy.system.dao;
 
 import com.hjy.system.entity.TSysPerms;
 import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -26,7 +27,6 @@ public interface TSysPermsMapper {
      * @param tSysPerms 实例对象
      * @return 影响行数
      */
-    int insert(TSysPerms tSysPerms);
     int insertSelective(TSysPerms tSysPerms);
 
     /**

@@ -2,6 +2,7 @@ package com.hjy.system.dao;
 
 import com.hjy.system.entity.TSysUser;
 import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -42,7 +43,7 @@ public interface TSysUserMapper {
      * @param pkUserId 主键
      * @return 影响行数
      */
-    int deleteById(@Param("pkUserId")String pkUserId);
+    int deleteById(@Param("pkUserId") String pkUserId);
 
     /**
      * 查询所有行数据
@@ -65,21 +66,19 @@ public interface TSysUserMapper {
      * 通过user_id删除已分配角色数据
      * @param fk_user_id
      */
-    int deleteUserRoleByUserId(@Param("fkUserId")String fk_user_id);
+    int deleteUserRoleByUserId(@Param("fkUserId") String fk_user_id);
     /**
      * 通过用户名查询用户信息
      * @return TSysUser
      */
-    TSysUser selectUserByUsername(@Param("username")String username);
+    TSysUser selectUserByUsername(@Param("username") String username);
 
+    int selectSize(TSysUser user);
     /**
      * 分页查询所有行数据
      * @return 对象列表
      */
     List<TSysUser> selectAllPage(TSysUser user);
-    /**
-     * 查询用户表中所有用户名
-     * @return 用户名列表
-     */
+
     List<String> selectAllUsername();
 }

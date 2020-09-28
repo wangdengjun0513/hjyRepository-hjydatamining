@@ -7,6 +7,7 @@ import com.hjy.system.dao.TSysParamMapper;
 import com.hjy.system.service.TSysParamService;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -25,13 +26,13 @@ public class TSysParamServiceImpl implements TSysParamService {
     private TSysParamMapper tSysParamMapper;
 
 
-
     /**
      * 修改数据
      *
      * @param tSysParam 实例对象
      * @return 实例对象
      */
+    @Transactional()
     @Override
     public CommonResult updateById(TSysParam tSysParam, HttpSession session) throws Exception{
         ActiveUser activeUser = (ActiveUser) session.getAttribute("activeUser");
@@ -82,10 +83,5 @@ public class TSysParamServiceImpl implements TSysParamService {
     @Override
     public String selectParamById(String pkParamId) {
         return tSysParamMapper.selectParamById(pkParamId);
-    }
-    //查询预警所需的参数值
-    @Override
-    public List<TSysParam> selectWarningParam() {
-        return tSysParamMapper.selectWarningParam();
     }
 }

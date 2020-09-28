@@ -163,7 +163,31 @@
         select * from "hjy_website"."t_sys_dept"
     </select>
     <!--No problem 查询所有部门单位数据-->
-    <select id="selectDeptName" resultType="java.lang.String">
+    <select id="selectAllDeptName" resultType="java.lang.String">
         select t_sys_dept.dept_name from t_sys_dept
     </select>
+
+    <select id="selectDeptUser_userIded" resultType="java.lang.String">
+        select fk_user_id from re_dept_user where fk_dept_id in (select distinct fk_dept_id from  re_dept_user)
+    </select>
+    <select id="selectDeptUserByDept" resultType="java.lang.String" parameterType="java.lang.String">
+        select fk_user_id from re_dept_user where fk_dept_id = #{fkDeptId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteDeptUserByDeptId" parameterType="java.lang.String">
+        delete from re_dept_user where fk_dept_id =#{fkDeptId,jdbcType=VARCHAR}
+    </delete>
+    <!--部门批量添加用户    -->
+    <insert id="addDeptUserByList" parameterType="list">
+        insert ALL
+        <foreach collection="idList" item="item" separator="">
+            INTO
+            re_dept_user(pk_deptUser_id,fk_dept_id,fk_user_id)
+            values
+            (
+            #{item.pk_deptUser_id, jdbcType=VARCHAR},
+            #{item.fk_dept_id, jdbcType=VARCHAR},
+            #{item.fk_user_id, jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
 </mapper>

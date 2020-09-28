@@ -15,7 +15,7 @@ public interface TSysTokenMapper {
 
     void deleteAll();
 
-    void deleteToken(@Param("tokenId")String tokenId);
+    void deleteToken(@Param("tokenId") String tokenId);
 
-    String selectIpByUsername(@Param("username")String username);
+    String selectIpByUsername(@Param("username") String username);
 }

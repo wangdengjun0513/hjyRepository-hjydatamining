@@ -1,19 +1,19 @@
 package com.hjy.system.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-
-import lombok.Data;
 
 /**
  * (TSysPerms)实体类
  *
- * @author liuchun
- * @since 2020-07-24 09:55:41
+ * @author makejava
+ * @since 2020-09-28 09:48:45
  */
 @Data
 public class TSysPerms implements Serializable {
-    private static final long serialVersionUID = -72432537446108401L;
+    private static final long serialVersionUID = -81453380641482687L;
     private String pkPermsId;
     /**
      * 父级菜单
@@ -32,7 +32,7 @@ public class TSysPerms implements Serializable {
      */
     private String permsCode;
     /**
-     * 菜单类型，菜单或按钮
+     * 菜单类型1代表模块2类别3主菜单4按钮
      */
     private String menuType;
     /**

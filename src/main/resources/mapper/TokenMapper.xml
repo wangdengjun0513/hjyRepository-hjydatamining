@@ -19,23 +19,14 @@
             <if test="pkTokenId != null and pkTokenId != ''">
                 pk_token_id,
             </if>
+            <if test="fkUserId != null and fkUserId != ''">
+                fk_user_id,
+            </if>
             <if test="username != null and username != ''">
                 username,
             </if>
             <if test="password != null and password != ''">
                 password,
-            </if>
-            <if test="ip != null">
-                ip,
-            </if>
-            <if test="fullName != null and fullName != ''">
-                full_name,
-            </if>
-            <if test="idCard != null and idCard != ''">
-                id_card,
-            </if>
-            <if test="fkUserId != null and fkUserId != ''">
-                fk_user_id,
             </if>
             <if test="expireTime != null">
                 expire_time,
@@ -43,10 +34,22 @@
             <if test="updateTime != null">
                 update_time,
             </if>
+            <if test="fullName != null and fullName != ''">
+                full_name,
+            </if>
+            <if test="idcard != null and idcard != ''">
+                id_card,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="pkTokenId != null and pkTokenId != ''">
                 #{pkTokenId,jdbcType=VARCHAR},
+            </if>
+            <if test="fkUserId != null and fkUserId != ''">
+                #{fkUserId,jdbcType=VARCHAR},
             </if>
             <if test="username != null and username != ''">
                 #{username,jdbcType=VARCHAR},
@@ -54,23 +57,20 @@
             <if test="password != null and password != ''">
                 #{password,jdbcType=VARCHAR},
             </if>
-            <if test="ip != null">
-                #{ip,jdbcType=VARCHAR},
-            </if>
-            <if test="fullName != null and fullName != ''">
-                #{fullName,jdbcType=VARCHAR},
-            </if>
-            <if test="idCard != null and idCard != ''">
-                #{idCard,jdbcType=VARCHAR},
-            </if>
-            <if test="fkUserId != null and fkUserId != ''">
-                #{fkUserId,jdbcType=VARCHAR},
-            </if>
             <if test="expireTime != null">
                 #{expireTime,jdbcType=DATE},
             </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=DATE},
+            </if>
+            <if test="fullName != null and fullName != ''">
+                #{fullName,jdbcType=VARCHAR},
+            </if>
+            <if test="idcard != null and idcard != ''">
+                #{idcard,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -81,7 +81,7 @@
                 pk_token_id = #{pkTokenId,jdbcType=VARCHAR},
             </if>
             <if test="username != null and username != ''">
-                username= #{username,jdbcType=VARCHAR},
+                username = #{username,jdbcType=VARCHAR},
             </if>
             <if test="password != null and password != ''">
                 password = #{password,jdbcType=VARCHAR},
@@ -92,8 +92,8 @@
             <if test="fullName != null and fullName != ''">
                 full_name = #{fullName,jdbcType=VARCHAR},
             </if>
-            <if test="idCard != null and idCard != ''">
-                id_card = #{idCard,jdbcType=VARCHAR},
+            <if test="idcard != null and idcard != ''">
+                id_card = #{idcard,jdbcType=VARCHAR},
             </if>
             <if test="fkUserId != null and fkUserId != ''">
                 fk_user_id = #{fkUserId,jdbcType=VARCHAR},
