@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjy.business.dao.TBannerMapper">
+
+    <sql id="BaseColumnList">
+    pk_banner_id,
+    banner_pic,
+    banner_title,
+    banner_desc,
+    banner_pc_url,
+    banner_mobile_url,
+    banner_status,
+    banner_date,
+    fk_user_id,
+    last_modify_user_id,
+    last_modify_date,
+  </sql>
+    <!--通过主键查询单个-->
+    <select id="selectById" resultType="com.hjy.business.entity.TBanner" parameterType="com.hjy.business.entity.TBanner">
+        select * from t_banner where pk_banner_id = #{pkBannerId,jdbcType=VARCHAR}
+    </select>
+    <!--通过实体作为筛选条件查询-->
+    <select id="selectAllByEntity" resultType="com.hjy.business.entity.TBanner"
+            parameterType="com.hjy.business.entity.TBanner">
+        select * from t_banner
+        <where>
+            <if test="pkBannerId != null and pkBannerId != ''">
+                and pk_banner_id = #{pkBannerId,jdbcType=INTEGER}
+            </if>
+            <if test="bannerTitle != null and bannerTitle != ''">
+                and banner_title = #{bannerTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="bannerDesc != null and bannerDesc != ''">
+                and banner_desc = #{bannerDesc,jdbcType=VARCHAR}
+            </if>
+            <if test="bannerPcUrl != null and bannerPcUrl != ''">
+                and banner_pc_url = #{bannerPcUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="bannerMobileUrl != null and bannerMobileUrl != ''">
+                and banner_mobile_url = #{bannerMobileUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="bannerStatus != null ">
+                and banner_status = #{bannerStatus,jdbcType=TINYINT}
+            </if>
+            <if test="bannerDate != null">
+                and banner_date = #{bannerDate,jdbcType=DATE}
+            </if>
+            <if test="fkUserId != null and fkUserId != ''">
+                and fk_user_id = #{fkUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="lastModifyUserId != null and lastModifyUserId != ''">
+                and last_modify_user_id = #{lastModifyUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="lastModifyDate != null">
+                and last_modify_date = #{lastModifyDate,jdbcType=DATE}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insertSelective" parameterType="com.hjy.business.entity.TBanner">
+        insert into t_banner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pkBannerId != null and pkBannerId != ''">
+                pk_banner_id,
+            </if>
+            <if test="bannerPic != null and bannerPic != ''">
+                banner_pic
+            </if>
+            <if test="bannerTitle != null and bannerTitle != ''">
+                banner_desc,
+            </if>
+            <if test="bannerDesc != null and bannerDesc != ''">
+                banner_title,
+            </if>
+            <if test="bannerPcUrl != null and bannerPcUrl != ''">
+                banner_pc_url,
+            </if>
+            <if test="bannerMobileUrl != null and bannerMobileUrl != ''">
+                banner_mobile_url,
+            </if>
+            <if test="bannerStatus != null ">
+                banner_status,
+            </if>
+            <if test="bannerDate != null">
+                banner_date,
+            </if>
+            <if test="fkUserId != null and fkUserId != ''">
+                fk_user_id,
+            </if>
+            <if test="lastModifyUserId != null and lastModifyUserId != ''">
+                last_modify_user_id,
+            </if>
+            <if test="lastModifyDate != null">
+                last_modify_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pkBannerId != null and pkBannerId != ''">
+                #{pkBannerId,jdbcType=INTEGER},
+            </if>
+            <if test="bannerPic != null and bannerPic != ''">
+                #{bannerPic,jdbcType=VARCHAR},
+            </if>
+            <if test="bannerTitle != null and bannerTitle != ''">
+                #{bannerTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="bannerDesc != null and bannerDesc != ''">
+                #{bannerDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="bannerPcUrl != null and bannerPcUrl != ''">
+                #{bannerPcUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="bannerMobileUrl != null and bannerMobileUrl != ''">
+                #{bannerMobileUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="bannerStatus != null ">
+                #{bannerStatus,jdbcType=TINYINT},
+            </if>
+            <if test="bannerDate != null">
+                #{bannerDate,jdbcType=DATE},
+            </if>
+            <if test="fkUserId != null and fkUserId != ''">
+                #{fkUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifyUserId != null and lastModifyUserId != ''">
+                #{lastModifyUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifyDate != null">
+                #{lastModifyDate,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="updateById" parameterType="com.hjy.business.entity.TBanner">
+        update t_banner
+        <set>
+            <if test="bannerPic != null and bannerPic != ''">
+                banner_pic = #{bannerPic,jdbcType=VARCHAR}
+            </if>
+            <if test="bannerTitle != null and bannerTitle != ''">
+               banner_title = #{bannerTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="bannerDesc != null and bannerDesc != ''">
+                banner_desc = #{bannerDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="bannerPcUrl != null and bannerPcUrl != ''">
+                banner_pc_url = #{bannerPcUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="bannerMobileUrl != null and bannerMobileUrl != ''">
+                banner_mobile_url = #{bannerMobileUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="bannerStatus != null and bannerStatus !='' ">
+                banner_status = #{bannerStatus,jdbcType=TINYINT},
+            </if>
+            <if test="bannerDate != null">
+                banner_date = #{bannerDate,jdbcType=DATE},
+            </if>
+            <if test="fkUserId != null and fkUserId != ''">
+                fk_user_id = #{fkUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifyUserId != null and lastModifyUserId != ''">
+                last_modify_user_id = #{lastModifyUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifyDate != null">
+                last_modify_date = #{lastModifyDate,jdbcType=DATE},
+            </if>
+        </set>
+        where pk_banner_id = #{pkBannerId,jdbcType=VARCHAR}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById" parameterType="com.hjy.business.entity.TBanner">
+        delete from t_banner where pk_banner_id = #{pkBannerId,jdbcType=VARCHAR}
+    </delete>
+    <!--查询所有行数据-->
+    <select id="selectAllPage" resultType="com.hjy.system.entity.TSysUser">
+        select * from t_sys_user
+        <where>
+        <if test="bannerTitle != null and bannerTitle != ''">
+            and banner_title like '%${bannerTitle}%'
+        </if>
+        <if test="bannerStatus != null and bannerStatus != ''">
+            and banner_status like '%${bannerStatus}%'
+        </if>
+        </where>
+    </select>
+</mapper>
