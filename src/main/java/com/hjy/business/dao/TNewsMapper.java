@@ -1,55 +1,55 @@
 package com.hjy.business.dao;
 
-import com.hjy.business.entity.TBanner;
+import com.hjy.business.entity.TNews;
 
 import java.util.List;
 
 /**
- * (TBanner)表数据库访问层
+ * (TNews)表数据库访问层
  *
- * @author TBanner
+ * @author TNews
  * @since 2020-07-27 16:15:29
  */
-public interface TBannerMapper {
+public interface TNewsMapper {
 
     /**
      * 通过ID查询单条数据
      *
-     * @param pkBannerId 主键
+     * @param pkNewsId 主键
      * @return 实例对象
      */
-    TBanner selectById(String pkBannerId);
+    TNews selectById(String pkNewsId);
 
     /**
      * 新增数据
      *
-     * @param TBanner 实例对象
+     * @param tNews 实例对象
      * @return 影响行数
      */
-    int insertSelective(TBanner TBanner);
+    int insertSelective(TNews tNews);
 
     /**
      * 修改数据
      *
-     * @param TBanner 实例对象
+     * @param tNews 实例对象
      * @return 影响行数
      */
-    int updateById(TBanner TBanner);
+    int updateById(TNews tNews);
 
     /**
      * 通过主键删除数据
      *
-     * @param pkBannerId 主键
+     * @param pkNewsId 主键
      * @return 影响行数
      */
-    int deleteById(String pkBannerId);
+    int deleteById(String pkNewsId);
 
      /**
      * 通过实体作为筛选条件查询
      *
-     * @param tBanner 实例对象
+     * @param tNews 实例对象
      * @return 对象列表
      */
-    List<TBanner> selectAllPage(TBanner tBanner);
+    List<TNews> selectAllPage(TNews tNews);
 
 }

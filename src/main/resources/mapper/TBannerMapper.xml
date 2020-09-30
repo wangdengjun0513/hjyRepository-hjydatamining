@@ -175,14 +175,14 @@
         delete from t_banner where pk_banner_id = #{pkBannerId,jdbcType=VARCHAR}
     </delete>
     <!--查询所有行数据-->
-    <select id="selectAllPage" resultType="com.hjy.system.entity.TSysUser">
-        select * from t_sys_user
+    <select id="selectAllPage" resultType="com.hjy.business.entity.TBanner">
+        select * from t_banner
         <where>
         <if test="bannerTitle != null and bannerTitle != ''">
             and banner_title like '%${bannerTitle}%'
         </if>
         <if test="bannerStatus != null and bannerStatus != ''">
-            and banner_status like '%${bannerStatus}%'
+            and banner_status = #{bannerStatus,jdbcType=TINYINT}
         </if>
         </where>
     </select>
