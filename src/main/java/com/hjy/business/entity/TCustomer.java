@@ -13,7 +13,7 @@ import java.util.Date;
  */
 @Data
 public class TCustomer implements Serializable {
-    private static final long serialVersionUID = -2654819087415453966L;
+    private static final long serialVersionUID = -6687282543187512055L;
     /**
      * 新闻主键id
      */
