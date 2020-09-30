@@ -50,7 +50,7 @@ public class TNewsServiceImpl implements TNewsService {
      */
     @Override
     public CommonResult insertSelective(TNews tNews) throws Exception{
-        tNews.setPkNewsId(IDUtils.currentTimeMillis());
+        tNews.setPkNewsId(IDUtils.getUUID());
         tNews.setNewsStatus(0);
         tNews.setNewsDate(new Date());
         tNews.setLastModifyDate(tNews.getNewsDate());

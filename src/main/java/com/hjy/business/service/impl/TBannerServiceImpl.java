@@ -50,7 +50,7 @@ public class TBannerServiceImpl implements TBannerService {
      */
     @Override
     public CommonResult insertSelective(TBanner tBanner) throws Exception{
-        tBanner.setPkBannerId(IDUtils.currentTimeMillis());
+        tBanner.setPkBannerId(IDUtils.getUUID());
         tBanner.setBannerStatus(0);
         tBanner.setBannerDate(new Date());
         tBanner.setLastModifyDate(tBanner.getBannerDate());
