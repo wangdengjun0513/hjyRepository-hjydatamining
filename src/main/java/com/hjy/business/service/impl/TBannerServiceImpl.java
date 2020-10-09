@@ -11,6 +11,7 @@ import com.hjy.common.domin.CommonResult;
 import com.hjy.common.utils.IDUtils;
 import com.hjy.common.utils.JsonUtil;
 import com.hjy.common.utils.page.PageUtils;
+import com.hjy.system.entity.SysToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,10 +50,11 @@ public class TBannerServiceImpl implements TBannerService {
      * @return 实例对象
      */
     @Override
-    public CommonResult insertSelective(TBanner tBanner) throws Exception{
+    public CommonResult insertSelective(TBanner tBanner, SysToken sysToken) throws Exception{
         tBanner.setPkBannerId(IDUtils.getUUID());
         tBanner.setBannerStatus(0);
         tBanner.setCreateDate(new Date());
+        tBanner.setCreateUserId(sysToken.getFkUserId());
         tBanner.setLastModifyDate(tBanner.getCreateDate());
         tBanner.setLastModifyUserId(tBanner.getCreateUserId());
         tBannerMapper.insertSelective(tBanner);
@@ -62,12 +64,14 @@ public class TBannerServiceImpl implements TBannerService {
     /**
      * 修改数据
      *
-     * @param TBanner 实例对象
+     * @param tBanner 实例对象
      * @return 实例对象
      */
     @Override
-    public CommonResult updateById(TBanner TBanner) throws Exception{
-        tBannerMapper.updateById(TBanner);
+    public CommonResult updateById(TBanner tBanner,SysToken sysToken) throws Exception{
+        tBanner.setLastModifyDate(new Date());
+        tBanner.setLastModifyUserId(sysToken.getFkUserId());
+        tBannerMapper.updateById(tBanner);
         return new CommonResult(200,"success","数据添加成功!",null);
     }
 
@@ -82,7 +86,7 @@ public class TBannerServiceImpl implements TBannerService {
         JSONObject jsonObject = JSON.parseObject(parm);
         String pkBannerId=String.valueOf(jsonObject.get("pkBannerId"));
         tBannerMapper.deleteById(pkBannerId);
-        return new CommonResult(200,"success","数据添加成功!",null);
+        return new CommonResult(200,"success","数据删除成功!",null);
     }
     
 

@@ -1,5 +1,6 @@
 package com.hjy.business.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -49,17 +50,27 @@ public class TBanner implements Serializable {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     private Date createDate;
     /**
      * 创建人id
      */
     private String createUserId;
     /**
+     * 创建人姓名
+     */
+    private String createUseFullName;
+    /**
      * 最后修改人id
      */
     private String lastModifyUserId;
     /**
+     * 最后修改人姓名
+     */
+    private String lastModifyUserFullName;
+    /**
      * 最后修改时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     private Date lastModifyDate;
 }

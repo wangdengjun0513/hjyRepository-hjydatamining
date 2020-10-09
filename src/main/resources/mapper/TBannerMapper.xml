@@ -17,39 +17,44 @@
   </sql>
     <!--通过主键查询单个-->
     <select id="selectById" resultType="com.hjy.business.entity.TBanner" parameterType="com.hjy.business.entity.TBanner">
-        select * from t_banner where pk_banner_id = #{pkBannerId,jdbcType=VARCHAR}
+        select tb.*,ts1.full_name as createUseFullName,ts2.full_name as lastModifyUserFullName from t_banner tb
+        left join t_sys_user ts1 on tb.create_user_id=ts1.pk_user_id
+        left join t_sys_user ts2 on tb.last_modify_user_id=ts2.pk_user_id
+        where tb.pk_banner_id = #{pkBannerId,jdbcType=VARCHAR}
     </select>
     <!--通过实体作为筛选条件查询-->
     <select id="selectAllByEntity" resultType="com.hjy.business.entity.TBanner"
             parameterType="com.hjy.business.entity.TBanner">
-        select * from t_banner
+        select tb.*,ts1.full_name as createUseFullName,ts2.full_name as lastModifyUserFullName from t_banner tb
+        left join t_sys_user ts1 on tb.create_user_id=ts1.pk_user_id
+        left join t_sys_user ts2 on tb.last_modify_user_id=ts2.pk_user_id
         <where>
             <if test="pkBannerId != null and pkBannerId != ''">
-                and pk_banner_id = #{pkBannerId,jdbcType=INTEGER}
+                and tb.pk_banner_id = #{pkBannerId,jdbcType=INTEGER}
             </if>
             <if test="bannerTitle != null and bannerTitle != ''">
-                and banner_title = #{bannerTitle,jdbcType=VARCHAR}
+                and tb.banner_title = #{bannerTitle,jdbcType=VARCHAR}
             </if>
             <if test="bannerDesc != null and bannerDesc != ''">
-                and banner_desc = #{bannerDesc,jdbcType=VARCHAR}
+                and tb.banner_desc = #{bannerDesc,jdbcType=VARCHAR}
             </if>
             <if test="bannerPcUrl != null and bannerPcUrl != ''">
-                and banner_pc_url = #{bannerPcUrl,jdbcType=VARCHAR}
+                and tb.banner_pc_url = #{bannerPcUrl,jdbcType=VARCHAR}
             </if>
             <if test="bannerMobileUrl != null and bannerMobileUrl != ''">
-                and banner_mobile_url = #{bannerMobileUrl,jdbcType=VARCHAR}
+                and tb.banner_mobile_url = #{bannerMobileUrl,jdbcType=VARCHAR}
             </if>
             <if test="bannerStatus != null ">
-                and banner_status = #{bannerStatus,jdbcType=TINYINT}
+                and tb.banner_status = #{bannerStatus,jdbcType=TINYINT}
             </if>
             <if test="createUserId != null and createUserId != ''">
-                and create_user_id = #{createUserId,jdbcType=VARCHAR}
+                and tb.create_user_id = #{createUserId,jdbcType=VARCHAR}
             </if>
             <if test="lastModifyUserId != null and lastModifyUserId != ''">
-                and last_modify_user_id = #{lastModifyUserId,jdbcType=VARCHAR}
+                and tb.last_modify_user_id = #{lastModifyUserId,jdbcType=VARCHAR}
             </if>
             <if test="lastModifyDate != null">
-                and last_modify_date = #{lastModifyDate,jdbcType=DATE}
+                and tb.last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP}
             </if>
         </where>
     </select>
@@ -62,13 +67,13 @@
                 pk_banner_id,
             </if>
             <if test="bannerPic != null and bannerPic != ''">
-                banner_pic
+                banner_pic,
             </if>
             <if test="bannerTitle != null and bannerTitle != ''">
-                banner_desc,
+                banner_title,
             </if>
             <if test="bannerDesc != null and bannerDesc != ''">
-                banner_title,
+                banner_desc,
             </if>
             <if test="bannerPcUrl != null and bannerPcUrl != ''">
                 banner_pc_url,
@@ -121,7 +126,7 @@
                 #{bannerSort,jdbcType=INTEGER},
             </if>
             <if test="createDate != null">
-                #{createDate,jdbcType=DATE},
+                #{createDate,jdbcType=TIMESTAMP},
             </if>
             <if test="createUserId != null and createUserId != ''">
                 #{createUserId,jdbcType=VARCHAR},
@@ -130,7 +135,7 @@
                 #{lastModifyUserId,jdbcType=VARCHAR},
             </if>
             <if test="lastModifyDate != null">
-                #{lastModifyDate,jdbcType=DATE},
+                #{lastModifyDate,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
@@ -140,10 +145,10 @@
         update t_banner
         <set>
             <if test="bannerPic != null and bannerPic != ''">
-                banner_pic = #{bannerPic,jdbcType=VARCHAR}
+                banner_pic = #{bannerPic,jdbcType=VARCHAR},
             </if>
             <if test="bannerTitle != null and bannerTitle != ''">
-               banner_title = #{bannerTitle,jdbcType=VARCHAR},
+                banner_title = #{bannerTitle,jdbcType=VARCHAR},
             </if>
             <if test="bannerDesc != null and bannerDesc != ''">
                 banner_desc = #{bannerDesc,jdbcType=VARCHAR},
@@ -164,7 +169,7 @@
                 last_modify_user_id = #{lastModifyUserId,jdbcType=VARCHAR},
             </if>
             <if test="lastModifyDate != null">
-                last_modify_date = #{lastModifyDate,jdbcType=DATE},
+                last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP},
             </if>
         </set>
         where pk_banner_id = #{pkBannerId,jdbcType=VARCHAR}
@@ -176,15 +181,17 @@
     </delete>
     <!--查询所有行数据-->
     <select id="selectAllPage" resultType="com.hjy.business.entity.TBanner">
-        select * from t_banner
+        select tb.*,ts1.full_name as createUseFullName,ts2.full_name as lastModifyUserFullName from t_banner tb
+        left join t_sys_user ts1 on tb.create_user_id=ts1.pk_user_id
+        left join t_sys_user ts2 on tb.last_modify_user_id=ts2.pk_user_id
         <where>
         <if test="bannerTitle != null and bannerTitle != ''">
-            and banner_title like '%${bannerTitle}%'
+            and tb.banner_title like '%${bannerTitle}%'
         </if>
         <if test="bannerStatus != null and bannerStatus != ''">
-            and banner_status = #{bannerStatus,jdbcType=TINYINT}
+            and tb.banner_status = #{bannerStatus,jdbcType=TINYINT}
         </if>
         </where>
-        order by banner_sort desc
+        order by tb.banner_sort desc
     </select>
 </mapper>

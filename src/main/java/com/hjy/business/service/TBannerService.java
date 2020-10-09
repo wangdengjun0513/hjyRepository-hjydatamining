@@ -2,6 +2,7 @@ package com.hjy.business.service;
 
 import com.hjy.business.entity.TBanner;
 import com.hjy.common.domin.CommonResult;
+import com.hjy.system.entity.SysToken;
 
 /**
  * (TBanner)表服务接口
@@ -25,7 +26,7 @@ public interface TBannerService {
      * @param tBanner 实例对象
      * @return 实例对
      */
-    CommonResult insertSelective(TBanner tBanner) throws Exception;
+    CommonResult insertSelective(TBanner tBanner, SysToken sysToken) throws Exception;
 
     /**
      * 修改数据
@@ -33,7 +34,7 @@ public interface TBannerService {
      * @param tBanner 实例对象
      * @return 实例对象
      */
-    CommonResult updateById(TBanner tBanner) throws Exception;
+    CommonResult updateById(TBanner tBanner,SysToken sysToken) throws Exception;
 
     /**
      * 通过主键删除数据

@@ -23,18 +23,18 @@ public interface TBannerMapper {
     /**
      * 新增数据
      *
-     * @param TBanner 实例对象
+     * @param tBanner 实例对象
      * @return 影响行数
      */
-    int insertSelective(TBanner TBanner);
+    int insertSelective(TBanner tBanner);
 
     /**
      * 修改数据
      *
-     * @param TBanner 实例对象
+     * @param tBanner 实例对象
      * @return 影响行数
      */
-    int updateById(TBanner TBanner);
+    int updateById(TBanner tBanner);
 
     /**
      * 通过主键删除数据
