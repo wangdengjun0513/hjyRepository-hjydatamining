@@ -72,7 +72,7 @@ public class TBannerServiceImpl implements TBannerService {
         tBanner.setLastModifyDate(new Date());
         tBanner.setLastModifyUserId(sysToken.getFkUserId());
         tBannerMapper.updateById(tBanner);
-        return new CommonResult(200,"success","数据添加成功!",null);
+        return new CommonResult(200,"success","数据修改成功!",null);
     }
 
     /**
