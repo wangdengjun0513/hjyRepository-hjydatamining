@@ -23,16 +23,20 @@ public interface TBannerService {
 
     /**
      * 新增数据
-     * @param tBanner 实例对象
-     * @return 实例对
+     * @param tBanner
+     * @param sysToken
+     * @return
+     * @throws Exception
      */
     CommonResult insertSelective(TBanner tBanner, SysToken sysToken) throws Exception;
 
+
     /**
      * 修改数据
-     *
-     * @param tBanner 实例对象
-     * @return 实例对象
+     * @param tBanner
+     * @param sysToken
+     * @return
+     * @throws Exception
      */
     CommonResult updateById(TBanner tBanner,SysToken sysToken) throws Exception;
 

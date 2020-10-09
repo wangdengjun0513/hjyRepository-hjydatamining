@@ -11,6 +11,7 @@ import com.hjy.common.domin.CommonResult;
 import com.hjy.common.utils.IDUtils;
 import com.hjy.common.utils.JsonUtil;
 import com.hjy.common.utils.page.PageUtils;
+import com.hjy.system.entity.SysToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,14 +45,16 @@ public class TCustomerServiceImpl implements TCustomerService {
 
     /**
      * 新增数据
-     *
      * @param tCustomer 实例对象
-     * @return 实例对象
+     * @param sysToken
+     * @return
+     * @throws Exception
      */
     @Override
-    public CommonResult insertSelective(TCustomer tCustomer) throws Exception{
+    public CommonResult insertSelective(TCustomer tCustomer, SysToken sysToken) throws Exception{
         tCustomer.setPkCustomerId(IDUtils.getUUID());
         tCustomer.setCreateDate(new Date());
+        tCustomer.setCreateUserId(sysToken.getFkUserId());
         tCustomer.setLastModifyDate(tCustomer.getCreateDate());
         tCustomer.setLastModifyUserId(tCustomer.getCreateUserId());
         tCustomerMapper.insertSelective(tCustomer);
@@ -60,14 +63,17 @@ public class TCustomerServiceImpl implements TCustomerService {
 
     /**
      * 修改数据
-     *
-     * @param TCustomer 实例对象
-     * @return 实例对象
+     * @param tCustomer
+     * @param sysToken
+     * @return
+     * @throws Exception
      */
     @Override
-    public CommonResult updateById(TCustomer TCustomer) throws Exception{
-        tCustomerMapper.updateById(TCustomer);
-        return new CommonResult(200,"success","数据添加成功!",null);
+    public CommonResult updateById(TCustomer tCustomer, SysToken sysToken) throws Exception{
+        tCustomer.setLastModifyDate(new Date());
+        tCustomer.setLastModifyUserId(sysToken.getFkUserId());
+        tCustomerMapper.updateById(tCustomer);
+        return new CommonResult(200,"success","数据修改成功!",null);
     }
 
     /**
@@ -81,7 +87,7 @@ public class TCustomerServiceImpl implements TCustomerService {
         JSONObject jsonObject = JSON.parseObject(parm);
         String pkCustomerId=String.valueOf(jsonObject.get("pkCustomerId"));
         tCustomerMapper.deleteById(pkCustomerId);
-        return new CommonResult(200,"success","数据添加成功!",null);
+        return new CommonResult(200,"success","数据删除成功!",null);
     }
     
 

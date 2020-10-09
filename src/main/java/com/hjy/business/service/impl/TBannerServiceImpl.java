@@ -45,9 +45,10 @@ public class TBannerServiceImpl implements TBannerService {
 
     /**
      * 新增数据
-     *
-     * @param tBanner 实例对象
-     * @return 实例对象
+     * @param tBanner
+     * @param sysToken
+     * @return
+     * @throws Exception
      */
     @Override
     public CommonResult insertSelective(TBanner tBanner, SysToken sysToken) throws Exception{
@@ -63,9 +64,10 @@ public class TBannerServiceImpl implements TBannerService {
 
     /**
      * 修改数据
-     *
-     * @param tBanner 实例对象
-     * @return 实例对象
+     * @param tBanner
+     * @param sysToken
+     * @return
+     * @throws Exception
      */
     @Override
     public CommonResult updateById(TBanner tBanner,SysToken sysToken) throws Exception{

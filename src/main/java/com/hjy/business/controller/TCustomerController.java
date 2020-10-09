@@ -4,10 +4,15 @@ import com.hjy.business.entity.TCustomer;
 import com.hjy.business.service.TCustomerService;
 import com.hjy.common.domin.CommonResult;
 import com.hjy.common.exception.FebsException;
+import com.hjy.common.utils.TokenUtil;
+import com.hjy.system.entity.SysToken;
+import com.hjy.system.service.ShiroService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * (TCustomer)表控制层
@@ -23,6 +28,8 @@ public class TCustomerController {
      */
     @Autowired
     private TCustomerService tCustomerService;
+    @Autowired
+    private ShiroService shiroService;
 
     /**
      * 跳转到新增页面
@@ -42,11 +49,12 @@ public class TCustomerController {
      * @param tCustomer 实体对象
      * @return 新增结果
      */
-    @RequiresPermissions({"customer:view"})
+    @RequiresPermissions({"customer:add"})
     @PostMapping("/business/customer/add")
-    public CommonResult tCustomerAdd(@RequestBody TCustomer tCustomer) throws FebsException{
+    public CommonResult tCustomerAdd(@RequestBody TCustomer tCustomer, HttpServletRequest httpRequest) throws FebsException{
         try {
-            return tCustomerService.insertSelective(tCustomer);
+            SysToken sysToken=shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+            return tCustomerService.insertSelective(tCustomer,sysToken);
         } catch (Exception e) {
             String message = "数据添加失败";
             log.error(message, e);
@@ -58,7 +66,7 @@ public class TCustomerController {
      * 删除数据
      * @return 删除结果
      */
-    @RequiresPermissions({"customer:view"})
+    @RequiresPermissions({"customer:del"})
     @DeleteMapping("/business/customer/del")
     public CommonResult tCustomerDel(@RequestBody String parm) throws FebsException{
         try {
@@ -90,11 +98,12 @@ public class TCustomerController {
      * @param tCustomer 实体对象
      * @return 修改结果
      */
-    @RequiresPermissions({"customer:view"})
+    @RequiresPermissions({"customer:update"})
     @PutMapping("/business/customer/update")
-    public CommonResult tCustomerUpdate(@RequestBody TCustomer tCustomer) throws FebsException{
+    public CommonResult tCustomerUpdate(@RequestBody TCustomer tCustomer, HttpServletRequest httpRequest) throws FebsException{
         try {
-            return tCustomerService.updateById(tCustomer);
+            SysToken sysToken=shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+            return tCustomerService.updateById(tCustomer,sysToken);
         } catch (Exception e) {
             String message = "修改失败";
             log.error(message, e);
@@ -106,7 +115,7 @@ public class TCustomerController {
      * 查询所有数据
      * @return 所有数据
      */
-    @RequiresPermissions({"customer:view"})
+    @RequiresPermissions({"customer:list"})
     @PostMapping("/business/customer/list")
     public CommonResult tCustomerList(@RequestBody String param ) throws FebsException{
         try {

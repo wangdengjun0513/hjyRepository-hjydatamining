@@ -18,7 +18,10 @@
   </sql>
     <!--通过主键查询单个-->
     <select id="selectById" resultType="com.hjy.business.entity.TCustomer" parameterType="com.hjy.business.entity.TCustomer">
-        select * from t_customer where pk_customer_id = #{pkCustomerId,jdbcType=VARCHAR}
+        select tc.*,ts1.full_name as createUseFullName,ts2.full_name as lastModifyUserFullName from t_customer tc
+        left join t_sys_user ts1 on tc.create_user_id=ts1.pk_user_id
+        left join t_sys_user ts2 on tc.last_modify_user_id=ts2.pk_user_id
+        where tc.pk_customer_id = #{pkCustomerId,jdbcType=VARCHAR}
     </select>
     <!--通过实体作为筛选条件查询-->
     <select id="selectAllByEntity" resultType="com.hjy.business.entity.TCustomer"
@@ -55,9 +58,6 @@
             <if test="lastModifyUserId != null and lastModifyUserId != ''">
                 and last_modify_user_id = #{lastModifyUserId,jdbcType=VARCHAR}
             </if>
-            <if test="lastModifyDate != null">
-                and last_modify_date = #{lastModifyDate,jdbcType=DATE}
-            </if>
         </where>
     </select>
 
@@ -69,7 +69,7 @@
                 pk_customer_id,
             </if>
             <if test="customerName != null and customerName != ''">
-                customer_name
+                customer_name,
             </if>
             <if test="customerContact != null and customerContact != ''">
                 customer_contact,
@@ -128,7 +128,7 @@
                 #{customerProfile,jdbcType=VARCHAR},
             </if>
             <if test="createDate != null">
-                #{createDate,jdbcType=DATE},
+                #{createDate,jdbcType=TIMESTAMP},
             </if>
             <if test="createUserId != null and createUserId != ''">
                 #{createUserId,jdbcType=VARCHAR},
@@ -137,7 +137,7 @@
                 #{lastModifyUserId,jdbcType=VARCHAR},
             </if>
             <if test="lastModifyDate != null">
-                #{lastModifyDate,jdbcType=DATE},
+                #{lastModifyDate,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
@@ -147,7 +147,7 @@
         update t_customer
         <set>
             <if test="customerName != null and customerName != ''">
-                customer_name = #{customerName,jdbcType=VARCHAR}
+                customer_name = #{customerName,jdbcType=VARCHAR},
             </if>
             <if test="customerContact != null and customerContact != ''">
                 customer_contact = #{customerContact,jdbcType=VARCHAR},
@@ -164,14 +164,14 @@
             <if test="customerCharacter != null and customerCharacter !='' ">
                 customer_character = #{customerCharacter,jdbcType=VARCHAR},
             </if>
-            <if test="characterProfile != null and characterProfile !='' ">
-                character_profile = #{characterProfile,jdbcType=VARCHAR},
+            <if test="customerProfile != null and customerProfile !='' ">
+                customer_profile = #{customerProfile,jdbcType=VARCHAR},
             </if>
             <if test="lastModifyUserId != null and lastModifyUserId != ''">
                 last_modify_user_id = #{lastModifyUserId,jdbcType=VARCHAR},
             </if>
             <if test="lastModifyDate != null">
-                last_modify_date = #{lastModifyDate,jdbcType=DATE},
+                last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP},
             </if>
         </set>
         where pk_customer_id = #{pkCustomerId,jdbcType=VARCHAR}
@@ -183,14 +183,17 @@
     </delete>
     <!--查询所有行数据-->
     <select id="selectAllPage" resultType="com.hjy.business.entity.TCustomer">
-        select * from t_customer
+        select tc.*,ts1.full_name as createUseFullName,ts2.full_name as lastModifyUserFullName from t_customer tc
+        left join t_sys_user ts1 on tc.create_user_id=ts1.pk_user_id
+        left join t_sys_user ts2 on tc.last_modify_user_id=ts2.pk_user_id
         <where>
         <if test="customerName != null and customerName != ''">
-            and customer_name like '%${customerName}%'
+            and tc.customer_name like '%${customerName}%'
         </if>
         <if test="customerContact != null and customerContact != ''">
-            and customer_contact like '%${customerContact}%'
+            and tc.customer_contact like '%${customerContact}%'
         </if>
         </where>
+        order by tc.last_modify_date desc
     </select>
 </mapper>

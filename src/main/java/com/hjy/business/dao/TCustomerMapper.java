@@ -23,18 +23,18 @@ public interface TCustomerMapper {
     /**
      * 新增数据
      *
-     * @param TCustomer 实例对象
+     * @param tCustomer 实例对象
      * @return 影响行数
      */
-    int insertSelective(TCustomer TCustomer);
+    int insertSelective(TCustomer tCustomer);
 
     /**
      * 修改数据
      *
-     * @param TCustomer 实例对象
+     * @param tCustomer 实例对象
      * @return 影响行数
      */
-    int updateById(TCustomer TCustomer);
+    int updateById(TCustomer tCustomer);
 
     /**
      * 通过主键删除数据
