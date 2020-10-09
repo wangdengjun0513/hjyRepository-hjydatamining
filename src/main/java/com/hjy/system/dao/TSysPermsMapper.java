@@ -49,6 +49,7 @@ public interface TSysPermsMapper {
      * @return 对象列表
      */
     List<TSysPerms> selectAll();
+    List<TSysPerms> selectAllIdAndName();
      /**
      * 通过实体作为筛选条件查询
      *
@@ -58,4 +59,6 @@ public interface TSysPermsMapper {
     List<TSysPerms> selectAllByEntity(TSysPerms tSysPerms);
 
     List<String> selectDistributeByrole_id(@Param("fk_role_id") String fk_role_id);
+
+    List<TSysPerms> selectAllPage(TSysPerms tSysPerms);
 }

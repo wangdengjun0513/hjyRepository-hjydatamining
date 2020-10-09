@@ -167,6 +167,26 @@
     <select id="selectAll" resultType="com.hjy.system.entity.TSysPerms">
         select * from t_sys_perms
     </select>
+    <select id="selectAllIdAndName" resultType="com.hjy.system.entity.TSysPerms">
+        select pk_perms_id,menu_name from t_sys_perms
+    </select>
+    <!--No problem 分页-模糊查询用户列表-->
+    <select id="selectAllPage" resultType="com.hjy.system.entity.TSysPerms">
+        select * from t_sys_perms
+        where 1=1
+        <if test="menuName != null">
+            and menu_name like '%${menuName}%'
+        </if>
+        <if test="path != null">
+            and path like '%${path}%'
+        </if>
+        <if test="permsCode != null">
+            and perms_code like '%${permsCode}%'
+        </if>
+        <if test="menuType != null">
+            and menu_type like '%${menuType}%'
+        </if>
+    </select>
     <select id="selectDistributeByrole_id" resultType="java.lang.String"
             parameterType="java.lang.String">
         select fk_perms_id from re_role_perms where fk_role_id = #{fk_role_id,jdbcType=VARCHAR}

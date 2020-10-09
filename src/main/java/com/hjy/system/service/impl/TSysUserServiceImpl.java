@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hjy.common.domin.CommonResult;
 import com.hjy.common.task.ObjectAsyncTask;
 import com.hjy.common.utils.IDUtils;
 import com.hjy.common.utils.JsonUtil;
 import com.hjy.common.utils.PasswordEncryptUtils;
+import com.hjy.common.utils.page.PageRequest;
 import com.hjy.common.utils.page.PageResult;
 import com.hjy.common.utils.page.PageUtils;
 import com.hjy.system.dao.TSysRoleMapper;
@@ -15,6 +17,7 @@ import com.hjy.system.entity.ActiveUser;
 import com.hjy.system.entity.ReUserRole;
 import com.hjy.system.dao.TSysUserMapper;
 import com.hjy.system.entity.TSysUser;
+import com.hjy.system.service.TSysRoleService;
 import com.hjy.system.service.TSysUserService;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +38,11 @@ public class TSysUserServiceImpl implements TSysUserService {
     @Autowired
     private TSysUserMapper tSysUserMapper;
     @Autowired
+    private TSysUserService tSysUserService;
+    @Autowired
     private TSysRoleMapper tSysRoleMapper;
+    @Autowired
+    private TSysRoleService tSysRoleService;
     /**
      * 通过ID查询单条数据
      * @return 实例对象
@@ -135,6 +142,9 @@ public class TSysUserServiceImpl implements TSysUserService {
         if(pageSizeStr != null){
             pageSize = Integer.parseInt(pageSizeStr);
         }
+//        PageRequest pageRequest = new PageRequest();
+//        pageRequest.setPageNum(pageNum);
+//        pageRequest.setPageSize(pageSize);
         PageHelper.startPage(pageNum, pageSize);
         List<TSysUser> users = tSysUserMapper.selectAllPage(user);
         return PageUtils.getPageResult(new PageInfo<TSysUser>(users));
@@ -181,7 +191,6 @@ public class TSysUserServiceImpl implements TSysUserService {
         TSysUser tSysUser = new TSysUser();
         String pkUserId = IDUtils.currentTimeMillis();
         tSysUser.setPkUserId(pkUserId);
-        String fkDeptId = JsonUtil.getStringParam(json,"fkDeptId");
         String fullName = JsonUtil.getStringParam(json,"fullName");
         String email = JsonUtil.getStringParam(json,"email");
         String tel = JsonUtil.getStringParam(json,"tel");
@@ -191,7 +200,6 @@ public class TSysUserServiceImpl implements TSysUserService {
         String workContent = JsonUtil.getStringParam(json,"workContent");
         tSysUser.setUsername(username);
         tSysUser.setIdcard(idcard);
-        tSysUser.setFkDeptId(fkDeptId);
         tSysUser.setFullName(fullName);
         tSysUser.setEmail(email);
         tSysUser.setTel(tel);
@@ -210,7 +218,7 @@ public class TSysUserServiceImpl implements TSysUserService {
         //是否直接分配角色
         String roleId = JsonUtil.getStringParam(json,"roleId");
         if(roleId == null){
-            result.put("code",446);
+            result.put("code",201);
             result.put("status","success");
             result.put("message","添加用户成功,但暂未分配角色，无法使用！");
             return result;
@@ -269,5 +277,23 @@ public class TSysUserServiceImpl implements TSysUserService {
     @Override
     public void addUserRoleByUserRole(ReUserRole userRole) {
         tSysRoleMapper.addUserRoleByUserRole(userRole);
+    }
+
+    @Override
+    public CommonResult tSysUserDel(String param) {
+        JSONObject jsonObject = JSON.parseObject(param);
+        String idStr=String.valueOf(jsonObject.get("pk_id"));
+        if("1597387976992".equals(idStr)){
+            return new CommonResult(445,"error","超级管理员不可删除!",null);
+        }
+        //删除用户表里的用户
+        int i = tSysUserService.deleteById(idStr);
+        //删除用户角色表里的用户
+        int j = tSysUserService.deleteUserRoleByUserId(idStr);
+        if(i > 0){
+            return new CommonResult(200,"success","数据删除成功!",null);
+        }else {
+            return new CommonResult(444,"error","数据删除失败!",null);
+        }
     }
 }

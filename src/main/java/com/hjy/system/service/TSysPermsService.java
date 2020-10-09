@@ -1,5 +1,6 @@
 package com.hjy.system.service;
 
+import com.hjy.common.utils.page.PageResult;
 import com.hjy.system.entity.ActiveUser;
 import com.hjy.system.entity.TSysPerms;
 import java.util.List;
@@ -55,4 +56,8 @@ public interface TSysPermsService {
     List<TSysPerms> selectAllByEntity(TSysPerms tSysPerms);
 
     List<String> selectDistributeByrole_id(String roleIdStr);
+
+    PageResult selectAllPage(String param);
+
+    List<TSysPerms> selectAllIdAndName();
 }

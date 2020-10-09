@@ -1,9 +1,17 @@
 package com.hjy.system.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hjy.common.utils.IDUtils;
+import com.hjy.common.utils.JsonUtil;
+import com.hjy.common.utils.page.PageResult;
+import com.hjy.common.utils.page.PageUtils;
 import com.hjy.system.entity.ActiveUser;
 import com.hjy.system.entity.TSysPerms;
 import com.hjy.system.dao.TSysPermsMapper;
+import com.hjy.system.entity.TSysUser;
 import com.hjy.system.service.TSysPermsService;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +92,10 @@ public class TSysPermsServiceImpl implements TSysPermsService {
     public List<TSysPerms> selectAll() {
         return this.tSysPermsMapper.selectAll();
     }
+    @Override
+    public List<TSysPerms> selectAllIdAndName() {
+        return this.tSysPermsMapper.selectAllIdAndName();
+    }
     /**
      * 通过实体查询多条数据
      * @return 对象列表
@@ -96,5 +108,34 @@ public class TSysPermsServiceImpl implements TSysPermsService {
     @Override
     public List<String> selectDistributeByrole_id(String roleIdStr) {
         return tSysPermsMapper.selectDistributeByrole_id(roleIdStr);
+    }
+
+    @Override
+    public PageResult selectAllPage(String param) {
+        JSONObject json = JSON.parseObject(param);
+        //实体数据
+        String pageNumStr = JsonUtil.getStringParam(json,"pageNum");
+        String pageSizeStr = JsonUtil.getStringParam(json,"pageSize");
+        String menuName = JsonUtil.getStringParam(json,"menuName");
+        String path = JsonUtil.getStringParam(json,"path");
+        String permsCode = JsonUtil.getStringParam(json,"permsCode");
+        String menuType = JsonUtil.getStringParam(json,"menuType");
+        TSysPerms tSysPerms = new TSysPerms();
+        tSysPerms.setMenuName(menuName);
+        tSysPerms.setPath(path);
+        tSysPerms.setPermsCode(permsCode);
+        tSysPerms.setMenuType(menuType);
+        //分页记录条数
+        int pageNum = 1;
+        int pageSize = 10;
+        if(pageNumStr != null){
+            pageNum = Integer.parseInt(pageNumStr);
+        }
+        if(pageSizeStr != null){
+            pageSize = Integer.parseInt(pageSizeStr);
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<TSysPerms> list = tSysPermsMapper.selectAllPage(tSysPerms);
+        return PageUtils.getPageResult(new PageInfo<TSysPerms>(list));
     }
 }

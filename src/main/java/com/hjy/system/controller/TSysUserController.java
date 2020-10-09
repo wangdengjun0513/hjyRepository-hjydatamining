@@ -90,7 +90,7 @@ public class TSysUserController {
      */
     @RequiresPermissions({"user:view"})
     @PostMapping("/system/user/list")
-    public CommonResult tSysUserList(@RequestBody String param ) throws FebsException{
+    public CommonResult tSysUserList(@RequestBody String param) throws FebsException{
         try {
             //
             PageResult pageResult= tSysUserService.selectAllPage(param);
@@ -113,18 +113,10 @@ public class TSysUserController {
      */
     @RequiresPermissions({"user:del"})
     @DeleteMapping("/system/user/del")
-    public CommonResult tSysUserDel(@RequestBody String parm) throws FebsException{
-        JSONObject jsonObject = JSON.parseObject(parm);
-        String idStr=String.valueOf(jsonObject.get("pk_id"));
-        if("1597387976992".equals(idStr)){
-            return new CommonResult(445,"error","超级管理员不可删除!",null);
-        }
+    public CommonResult tSysUserDel(@RequestBody String param) throws FebsException{
         try {
-            //删除用户表里的用户
-            tSysUserService.deleteById(idStr);
-            //删除用户角色表里的用户
-            tSysUserService.deleteUserRoleByUserId(idStr);
-            return new CommonResult(200,"success","数据删除成功!",null);
+            CommonResult commonResult = tSysUserService.tSysUserDel(param);
+            return commonResult;
         } catch (Exception e) {
             String message = "数据删除失败";
             log.error(message, e);
@@ -202,7 +194,7 @@ public class TSysUserController {
     @PostMapping(value = "/system/user/distributeRoleUI")
     public CommonResult roleDistributePage(@RequestBody String parm)throws FebsException{
         JSONObject json = JSON.parseObject(parm);
-        String fkUserId=String.valueOf(json.get("fk_user_id"));
+        String fkUserId=String.valueOf(json.get("pk_id"));
         JSONObject jsonObject = new JSONObject();
         try {
             //用户信息
@@ -224,7 +216,7 @@ public class TSysUserController {
     /**
      * 5 分配角色
      */
-//    @RequiresPermissions({"user:distributeRole"})
+    @RequiresPermissions({"user:distributeRole"})
     @PostMapping(value = "/system/user/distributeRole")
     public CommonResult roleDistribute(@RequestBody String parm) throws FebsException{
         JSONObject json = JSON.parseObject(parm);

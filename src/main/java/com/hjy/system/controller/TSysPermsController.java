@@ -2,6 +2,7 @@ package com.hjy.system.controller;
 
 import com.hjy.common.domin.CommonResult;
 import com.hjy.common.exception.FebsException;
+import com.hjy.common.utils.page.PageResult;
 import com.hjy.system.entity.ActiveUser;
 import com.hjy.system.entity.TSysPerms;
 import com.hjy.system.service.TSysPermsService;
@@ -39,8 +40,9 @@ public class TSysPermsController {
     @GetMapping(value = "/system/perms/addPage")
     public CommonResult tSysPermsAddPage() throws FebsException {
         try {
-            //
-            return new CommonResult(200,"success","成功!",null);
+            //查找所有权限
+            List<TSysPerms> permsList = tSysPermsService.selectAllIdAndName();
+            return new CommonResult(200,"success","成功!",permsList);
         } catch (Exception e) {
             String message = "失败";
             log.error(message, e);
@@ -73,12 +75,14 @@ public class TSysPermsController {
      * @return 所有数据
      */
     @RequiresPermissions({"perms:view"})
-    @GetMapping("/system/perms/list")
-    public CommonResult tSysPermsList() throws FebsException{
+    @PostMapping("/system/perms/list")
+    public CommonResult tSysPermsList(@RequestBody String param) throws FebsException{
         try {
             //
-            List<TSysPerms> tSysPermsList = tSysPermsService.selectAll();
-            return new CommonResult(200,"success","查询数据成功!",tSysPermsList);
+            PageResult pageResult= tSysPermsService.selectAllPage(param);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("PageResult",pageResult);
+            return new CommonResult(200,"success","查询数据成功!",jsonObject);
         } catch (Exception e) {
             String message = "查询数据失败";
             log.error(message, e);
@@ -126,14 +130,19 @@ public class TSysPermsController {
      * 4 通过主键查询单条数据
      * @return 单条数据
      */
-    @GetMapping("/system/perms/getOne")
+    @PostMapping("/system/perms/getOne")
     public CommonResult tSysPermsgetOne(@RequestBody String parm) throws FebsException{
         JSONObject jsonObject = JSON.parseObject(parm);
         String idStr=String.valueOf(jsonObject.get("pk_id"));
         try {
             //
+            JSONObject jsonResult = new JSONObject();
             TSysPerms tSysPerms = tSysPermsService.selectById(idStr);
-            return new CommonResult(200,"success","数据获取成功!",tSysPerms);
+            jsonResult.put("perms",tSysPerms);
+            //查找所有权限
+            List<TSysPerms> permsList = tSysPermsService.selectAllIdAndName();
+            jsonResult.put("permsList",permsList);
+            return new CommonResult(200,"success","数据获取成功!",jsonResult);
         } catch (Exception e) {
             String message = "数据获取失败";
             log.error(message, e);

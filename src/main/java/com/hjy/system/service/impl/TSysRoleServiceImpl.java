@@ -257,7 +257,7 @@ public class TSysRoleServiceImpl implements TSysRoleService {
         JSONObject jsonObject = JSON.parseObject(parm);
         String idStr=String.valueOf(jsonObject.get("pk_id"));
         if(idStr.equals("1595564064909") || idStr.equals("1598010216782")){
-            return new CommonResult(444,"error","超级管理员和普通用户不可删除!",null);
+            return new CommonResult(445,"error","超级管理员和普通用户不可删除!",null);
         }
         //删除角色表里的数据
         int i = tSysRoleService.deleteById(idStr);
@@ -265,7 +265,7 @@ public class TSysRoleServiceImpl implements TSysRoleService {
         int j = tSysRoleService.deleteUserRoleByRoleId(idStr);
         //删除角色权限表里的数据
         int k = tSysRoleService.deleteRolePermsByRoleId(idStr);
-        if(i > 0 && j > 0 && k > 0){
+        if(i > 0 && j >= 0 && k > 0){
             return new CommonResult(200,"success","角色删除成功!",null);
         }else {
             return new CommonResult(444,"error","角色删除失败!",null);

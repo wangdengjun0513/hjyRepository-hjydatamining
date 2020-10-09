@@ -84,6 +84,8 @@ public interface TSysUserService {
 
     void addUserRoleByUserRole(ReUserRole userRole);
 
+    CommonResult tSysUserDel(String param);
+
 //    CommonResult distributeRole(String parm);
 //
 //    CommonResult userDel(String param);
