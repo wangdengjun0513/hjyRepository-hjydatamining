@@ -25,7 +25,7 @@ public class TCustomer implements Serializable {
     /**
      * 联系方式
      */
-    private String customerTel;
+    private String customerContact;
     /**
      * 客户来源
      */
@@ -45,15 +45,15 @@ public class TCustomer implements Serializable {
     /**
      * 客户简介
      */
-    private String characterProfile;
+    private String customerProfile;
     /**
      * 创建时间
      */
-    private Date customerDate;
+    private Date createDate;
     /**
      * 创建人id
      */
-    private String fkUserId;
+    private String createUserId;
     /**
      * 最后修改人id
      */

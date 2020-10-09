@@ -97,7 +97,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="pkBannerId != null and pkBannerId != ''">
-                #{pkBannerId,jdbcType=INTEGER},
+                #{pkBannerId,jdbcType=VARCHAR},
             </if>
             <if test="bannerPic != null and bannerPic != ''">
                 #{bannerPic,jdbcType=VARCHAR},
