@@ -49,9 +49,6 @@
             <if test="customerProfile != null and customerProfile != ''">
                 and customer_profile = #{customerProfile,jdbcType=VARCHAR}
             </if>
-            <if test="createDate != null">
-                and create_date = #{createDate,jdbcType=DATE}
-            </if>
             <if test="createUserId != null and createUserId != ''">
                 and create_user_id = #{createUserId,jdbcType=VARCHAR}
             </if>

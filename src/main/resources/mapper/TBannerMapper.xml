@@ -10,8 +10,8 @@
     banner_pc_url,
     banner_mobile_url,
     banner_status,
-    banner_date,
-    fk_user_id,
+    create_date,
+    create_user_id,
     last_modify_user_id,
     last_modify_date,
   </sql>
@@ -42,11 +42,8 @@
             <if test="bannerStatus != null ">
                 and banner_status = #{bannerStatus,jdbcType=TINYINT}
             </if>
-            <if test="bannerDate != null">
-                and banner_date = #{bannerDate,jdbcType=DATE}
-            </if>
-            <if test="fkUserId != null and fkUserId != ''">
-                and fk_user_id = #{fkUserId,jdbcType=VARCHAR}
+            <if test="createUserId != null and createUserId != ''">
+                and create_user_id = #{createUserId,jdbcType=VARCHAR}
             </if>
             <if test="lastModifyUserId != null and lastModifyUserId != ''">
                 and last_modify_user_id = #{lastModifyUserId,jdbcType=VARCHAR}
@@ -82,11 +79,14 @@
             <if test="bannerStatus != null ">
                 banner_status,
             </if>
-            <if test="bannerDate != null">
-                banner_date,
+            <if test="bannerSort != null ">
+                banner_sort,
             </if>
-            <if test="fkUserId != null and fkUserId != ''">
-                fk_user_id,
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                create_user_id,
             </if>
             <if test="lastModifyUserId != null and lastModifyUserId != ''">
                 last_modify_user_id,
@@ -117,11 +117,14 @@
             <if test="bannerStatus != null ">
                 #{bannerStatus,jdbcType=TINYINT},
             </if>
-            <if test="bannerDate != null">
-                #{bannerDate,jdbcType=DATE},
+            <if test="bannerSort != null ">
+                #{bannerSort,jdbcType=INTEGER},
             </if>
-            <if test="fkUserId != null and fkUserId != ''">
-                #{fkUserId,jdbcType=VARCHAR},
+            <if test="createDate != null">
+                #{createDate,jdbcType=DATE},
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                #{createUserId,jdbcType=VARCHAR},
             </if>
             <if test="lastModifyUserId != null and lastModifyUserId != ''">
                 #{lastModifyUserId,jdbcType=VARCHAR},
@@ -154,11 +157,8 @@
             <if test="bannerStatus != null and bannerStatus !='' ">
                 banner_status = #{bannerStatus,jdbcType=TINYINT},
             </if>
-            <if test="bannerDate != null">
-                banner_date = #{bannerDate,jdbcType=DATE},
-            </if>
-            <if test="fkUserId != null and fkUserId != ''">
-                fk_user_id = #{fkUserId,jdbcType=VARCHAR},
+            <if test="bannerSort != null and bannerSort !='' ">
+                banner_sort = #{bannerSort,jdbcType=INTEGER},
             </if>
             <if test="lastModifyUserId != null and lastModifyUserId != ''">
                 last_modify_user_id = #{lastModifyUserId,jdbcType=VARCHAR},
@@ -185,5 +185,6 @@
             and banner_status = #{bannerStatus,jdbcType=TINYINT}
         </if>
         </where>
+        order by banner_sort desc
     </select>
 </mapper>

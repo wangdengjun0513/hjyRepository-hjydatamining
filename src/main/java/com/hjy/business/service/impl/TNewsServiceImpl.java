@@ -52,9 +52,9 @@ public class TNewsServiceImpl implements TNewsService {
     public CommonResult insertSelective(TNews tNews) throws Exception{
         tNews.setPkNewsId(IDUtils.getUUID());
         tNews.setNewsStatus(0);
-        tNews.setNewsDate(new Date());
-        tNews.setLastModifyDate(tNews.getNewsDate());
-        tNews.setLastModifyUserId(tNews.getFkUserId());
+        tNews.setCreateDate(new Date());
+        tNews.setLastModifyDate(tNews.getCreateDate());
+        tNews.setLastModifyUserId(tNews.getCreateUserId());
         tNewsMapper.insertSelective(tNews);
         return new CommonResult(200,"success","数据添加成功!",null);
     }

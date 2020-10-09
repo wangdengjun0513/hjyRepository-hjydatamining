@@ -9,8 +9,8 @@
     news_cover,
     news_status,
     news_type,
-    news_date,
-    fk_user_id,
+    create_date,
+    create_user_id,
     last_modify_user_id,
     last_modify_date,
   </sql>
@@ -41,8 +41,8 @@
             <if test="newsType != null and newsType != ''">
                 and news_type = #{newsType,jdbcType=TINYINT}
             </if>
-            <if test="fkUserId != null and fkUserId != ''">
-                and fk_user_id = #{fkUserId,jdbcType=VARCHAR}
+            <if test="createUserId != null and createUserId != ''">
+                and create_user_id = #{createUserId,jdbcType=VARCHAR}
             </if>
             <if test="lastModifyUserId != null and lastModifyUserId != ''">
                 and last_modify_user_id = #{lastModifyUserId,jdbcType=VARCHAR}
@@ -75,11 +75,11 @@
             <if test="newsType != null and newsType != ''">
                 news_type,
             </if>
-            <if test="newsDate != null">
-                news_date,
+            <if test="createDate != null">
+                create_date,
             </if>
-            <if test="fkUserId != null and fkUserId != ''">
-                fk_user_id,
+            <if test="createUserId != null and createUserId != ''">
+                create_user_id,
             </if>
             <if test="lastModifyUserId != null and lastModifyUserId != ''">
                 last_modify_user_id,
@@ -107,11 +107,11 @@
             <if test="newsType != null and newsType != ''">
                 #{newsType,jdbcType=TINYINT},
             </if>
-            <if test="newsDate != null">
-                #{newsDate,jdbcType=DATE},
+            <if test="createDate != null">
+                #{createDate,jdbcType=DATE},
             </if>
-            <if test="fkUserId != null and fkUserId != ''">
-                #{fkUserId,jdbcType=VARCHAR},
+            <if test="createUserId != null and createUserId != ''">
+                #{createUserId,jdbcType=VARCHAR},
             </if>
             <if test="lastModifyUserId != null and lastModifyUserId != ''">
                 #{lastModifyUserId,jdbcType=VARCHAR},
@@ -140,9 +140,6 @@
             </if>
             <if test="newsType != null and newsType != ''">
                  news_type = #{newsType,jdbcType=TINYINT},
-            </if>
-            <if test="fkUserId != null and fkUserId != ''">
-                 fk_user_id = #{fkUserId,jdbcType=VARCHAR},
             </if>
             <if test="lastModifyUserId != null and lastModifyUserId != ''">
                  last_modify_user_id = #{lastModifyUserId,jdbcType=VARCHAR},

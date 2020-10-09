@@ -41,11 +41,11 @@ public class TNews implements Serializable {
     /**
      * 创建时间
      */
-    private Date newsDate;
+    private Date createDate;
     /**
      * 创建人id
      */
-    private String fkUserId;
+    private String createUserId;
     /**
      * 最后修改人id
      */

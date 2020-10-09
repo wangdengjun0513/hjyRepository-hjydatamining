@@ -52,9 +52,9 @@ public class TBannerServiceImpl implements TBannerService {
     public CommonResult insertSelective(TBanner tBanner) throws Exception{
         tBanner.setPkBannerId(IDUtils.getUUID());
         tBanner.setBannerStatus(0);
-        tBanner.setBannerDate(new Date());
-        tBanner.setLastModifyDate(tBanner.getBannerDate());
-        tBanner.setLastModifyUserId(tBanner.getFkUserId());
+        tBanner.setCreateDate(new Date());
+        tBanner.setLastModifyDate(tBanner.getCreateDate());
+        tBanner.setLastModifyUserId(tBanner.getCreateUserId());
         tBannerMapper.insertSelective(tBanner);
         return new CommonResult(200,"success","数据添加成功!",null);
     }

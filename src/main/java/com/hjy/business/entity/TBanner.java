@@ -43,13 +43,17 @@ public class TBanner implements Serializable {
      */
     private int bannerStatus;
     /**
+     * banner序号（值越大越靠前）
+     */
+    private int bannerSort;
+    /**
      * 创建时间
      */
-    private Date bannerDate;
+    private Date createDate;
     /**
      * 创建人id
      */
-    private String fkUserId;
+    private String createUserId;
     /**
      * 最后修改人id
      */
