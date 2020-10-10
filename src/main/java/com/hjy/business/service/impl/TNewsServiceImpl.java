@@ -11,6 +11,7 @@ import com.hjy.common.domin.CommonResult;
 import com.hjy.common.utils.IDUtils;
 import com.hjy.common.utils.JsonUtil;
 import com.hjy.common.utils.page.PageUtils;
+import com.hjy.system.entity.SysToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,15 +45,18 @@ public class TNewsServiceImpl implements TNewsService {
 
     /**
      * 新增数据
-     *
-     * @param tNews 实例对象
-     * @return 实例对象
+     * @param tNews
+     * @param sysToken
+     * @param newsType
+     * @return
+     * @throws Exception
      */
     @Override
-    public CommonResult insertSelective(TNews tNews) throws Exception{
+    public CommonResult insertSelective(TNews tNews, SysToken sysToken,Integer newsType) throws Exception{
         tNews.setPkNewsId(IDUtils.getUUID());
-        tNews.setNewsStatus(0);
+        tNews.setNewsType(newsType);
         tNews.setCreateDate(new Date());
+        tNews.setCreateUserId(sysToken.getFkUserId());
         tNews.setLastModifyDate(tNews.getCreateDate());
         tNews.setLastModifyUserId(tNews.getCreateUserId());
         tNewsMapper.insertSelective(tNews);
@@ -61,14 +65,15 @@ public class TNewsServiceImpl implements TNewsService {
 
     /**
      * 修改数据
-     *
-     * @param TNews 实例对象
-     * @return 实例对象
+     * @param tNews
+     * @param sysToken
+     * @return
+     * @throws Exception
      */
     @Override
-    public CommonResult updateById(TNews TNews) throws Exception{
-        tNewsMapper.updateById(TNews);
-        return new CommonResult(200,"success","数据添加成功!",null);
+    public CommonResult updateById(TNews tNews, SysToken sysToken) throws Exception{
+        tNewsMapper.updateById(tNews);
+        return new CommonResult(200,"success","数据修改成功!",null);
     }
 
     /**
@@ -82,23 +87,22 @@ public class TNewsServiceImpl implements TNewsService {
         JSONObject jsonObject = JSON.parseObject(parm);
         String pkNewsId=String.valueOf(jsonObject.get("pkNewsId"));
         tNewsMapper.deleteById(pkNewsId);
-        return new CommonResult(200,"success","数据添加成功!",null);
+        return new CommonResult(200,"success","数据删除成功!",null);
     }
     
 
     @Override
-    public CommonResult selectAllPage(String param) {
+    public CommonResult selectAllPage(String param,Integer newsType) {
         JSONObject json = JSON.parseObject(param);
         //实体数据
         String pageNumStr = JsonUtil.getStringParam(json,"pageNum");
         String pageSizeStr = JsonUtil.getStringParam(json,"pageSize");
         String newsTitle = JsonUtil.getStringParam(json,"newsTitle");
         String newsStatus = JsonUtil.getStringParam(json,"newsStatus");
-        String newsType = JsonUtil.getStringParam(json,"newsType");
         TNews tNews = new TNews();
         tNews.setNewsTitle(newsTitle);
         tNews.setNewsStatus(Integer.parseInt(newsStatus));
-        tNews.setNewsType(Integer.parseInt(newsType));
+        tNews.setNewsType(newsType);
         //分页记录条数
         int pageNum = 1;
         int pageSize = 10;

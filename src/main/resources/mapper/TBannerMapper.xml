@@ -30,7 +30,7 @@
         left join t_sys_user ts2 on tb.last_modify_user_id=ts2.pk_user_id
         <where>
             <if test="pkBannerId != null and pkBannerId != ''">
-                and tb.pk_banner_id = #{pkBannerId,jdbcType=INTEGER}
+                and tb.pk_banner_id = #{pkBannerId,jdbcType=VARCHAR}
             </if>
             <if test="bannerTitle != null and bannerTitle != ''">
                 and tb.banner_title = #{bannerTitle,jdbcType=VARCHAR}

@@ -2,6 +2,7 @@ package com.hjy.business.service;
 
 import com.hjy.business.entity.TNews;
 import com.hjy.common.domin.CommonResult;
+import com.hjy.system.entity.SysToken;
 
 /**
  * (TNews)表服务接口
@@ -22,18 +23,22 @@ public interface TNewsService {
 
     /**
      * 新增数据
-     * @param tNews 实例对象
-     * @return 实例对
+     * @param tNews
+     * @param sysToken
+     * @param newsType
+     * @return
+     * @throws Exception
      */
-    CommonResult insertSelective(TNews tNews) throws Exception;
+    CommonResult insertSelective(TNews tNews, SysToken sysToken,Integer newsType) throws Exception;
 
     /**
      * 修改数据
-     *
-     * @param tNews 实例对象
-     * @return 实例对象
+     * @param tNews
+     * @param sysToken
+     * @return
+     * @throws Exception
      */
-    CommonResult updateById(TNews tNews) throws Exception;
+    CommonResult updateById(TNews tNews, SysToken sysToken) throws Exception;
 
     /**
      * 通过主键删除数据
@@ -48,5 +53,5 @@ public interface TNewsService {
      * @param param
      * @return
      */
-    CommonResult selectAllPage(String param);
+    CommonResult selectAllPage(String param,Integer newsType);
 }

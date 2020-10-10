@@ -29,7 +29,7 @@
         select * from t_customer
         <where>
             <if test="pkCustomerId != null and pkCustomerId != ''">
-                and pk_customer_id = #{pkCustomerId,jdbcType=INTEGER}
+                and pk_customer_id = #{pkCustomerId,jdbcType=VARCHAR}
             </if>
             <if test="customerName != null and customerName != ''">
                 and customer_name = #{customerName,jdbcType=VARCHAR}

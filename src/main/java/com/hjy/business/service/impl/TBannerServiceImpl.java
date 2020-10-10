@@ -53,7 +53,6 @@ public class TBannerServiceImpl implements TBannerService {
     @Override
     public CommonResult insertSelective(TBanner tBanner, SysToken sysToken) throws Exception{
         tBanner.setPkBannerId(IDUtils.getUUID());
-        tBanner.setBannerStatus(0);
         tBanner.setCreateDate(new Date());
         tBanner.setCreateUserId(sysToken.getFkUserId());
         tBanner.setLastModifyDate(tBanner.getCreateDate());
