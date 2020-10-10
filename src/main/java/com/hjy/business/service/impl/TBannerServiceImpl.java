@@ -10,6 +10,7 @@ import com.hjy.business.service.TBannerService;
 import com.hjy.common.domin.CommonResult;
 import com.hjy.common.utils.IDUtils;
 import com.hjy.common.utils.JsonUtil;
+import com.hjy.common.utils.StringUtil;
 import com.hjy.common.utils.page.PageUtils;
 import com.hjy.system.entity.SysToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,8 +101,10 @@ public class TBannerServiceImpl implements TBannerService {
         String bannerTitle = JsonUtil.getStringParam(json,"bannerTitle");
         String bannerStatus = JsonUtil.getStringParam(json,"bannerStatus");
         TBanner tBanner = new TBanner();
+        if(StringUtil.isNotEmptyAndNull(bannerStatus)){
+            tBanner.setBannerStatus(Integer.parseInt(bannerStatus));
+        }
         tBanner.setBannerTitle(bannerTitle);
-        tBanner.setBannerStatus(Integer.parseInt(bannerStatus));
         //分页记录条数
         int pageNum = 1;
         int pageSize = 10;

@@ -10,6 +10,7 @@ import com.hjy.business.service.TNewsService;
 import com.hjy.common.domin.CommonResult;
 import com.hjy.common.utils.IDUtils;
 import com.hjy.common.utils.JsonUtil;
+import com.hjy.common.utils.StringUtil;
 import com.hjy.common.utils.page.PageUtils;
 import com.hjy.system.entity.SysToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,10 +100,17 @@ public class TNewsServiceImpl implements TNewsService {
         String pageSizeStr = JsonUtil.getStringParam(json,"pageSize");
         String newsTitle = JsonUtil.getStringParam(json,"newsTitle");
         String newsStatus = JsonUtil.getStringParam(json,"newsStatus");
+        String newsTypeSe = JsonUtil.getStringParam(json,"newsType");
         TNews tNews = new TNews();
         tNews.setNewsTitle(newsTitle);
-        tNews.setNewsStatus(Integer.parseInt(newsStatus));
-        tNews.setNewsType(newsType);
+        if(newsType == 1 ){
+            tNews.setNewsType(newsType);
+        }else if(StringUtil.isNotEmptyAndNull(newsTypeSe)){
+            tNews.setNewsType(Integer.parseInt(newsTypeSe));
+        }
+        if(StringUtil.isNotEmptyAndNull(newsStatus)){
+            tNews.setNewsStatus(Integer.parseInt(newsStatus));
+        }
         //分页记录条数
         int pageNum = 1;
         int pageSize = 10;
