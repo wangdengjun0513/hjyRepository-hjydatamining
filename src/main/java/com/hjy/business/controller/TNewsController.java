@@ -115,7 +115,7 @@ public class TNewsController {
      * 查询所有数据
      * @return 所有数据
      */
-    @RequiresPermissions({"news:list"})
+//    @RequiresPermissions({"news:list"})
     @PostMapping("/business/news/list")
     public CommonResult tNewsList(@RequestBody String param ) throws FebsException{
         try {

@@ -115,7 +115,7 @@ public class TBannerController {
      * 查询所有数据
      * @return 所有数据
      */
-    @RequiresPermissions({"banner:view"})
+//    @RequiresPermissions({"banner:view"})
     @PostMapping("/business/banner/list")
     public CommonResult tBannerList(@RequestBody String param ) throws FebsException{
         try {
