@@ -4,12 +4,12 @@ import com.hjy.common.domin.CommonResult;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * 视频服务接口
+ * 文件上传服务接口
  *
  * @author wangdengjun
  * @since 2020-07-27 16:15:29
  */
-public interface VideoUpLoadService {
+public interface fileUpLoadService {
 
 
     /**
@@ -18,7 +18,7 @@ public interface VideoUpLoadService {
      * @return
      * @throws Exception
      */
-    CommonResult singleVideoUpLoad(MultipartFile file,String videoUpLoadPath)throws Exception;
+    CommonResult singleVideoUpLoad(MultipartFile file,String upLoadPath,String username)throws Exception;
 
 
 }
