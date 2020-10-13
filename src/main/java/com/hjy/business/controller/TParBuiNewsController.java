@@ -118,7 +118,7 @@ public class TParBuiNewsController {
      * 查询所有数据
      * @return 所有数据
      */
-    @RequiresPermissions({"parbuinews:list"})
+//    @RequiresPermissions({"parbuinews:list"})
     @PostMapping("/business/parbuinews/list")
     public CommonResult tNewsList(@RequestBody String param ) throws FebsException{
         try {

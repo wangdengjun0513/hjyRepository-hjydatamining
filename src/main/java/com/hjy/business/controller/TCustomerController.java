@@ -115,7 +115,7 @@ public class TCustomerController {
      * 查询所有数据
      * @return 所有数据
      */
-    @RequiresPermissions({"customer:list"})
+//    @RequiresPermissions({"customer:list"})
     @PostMapping("/business/customer/list")
     public CommonResult tCustomerList(@RequestBody String param ) throws FebsException{
         try {
