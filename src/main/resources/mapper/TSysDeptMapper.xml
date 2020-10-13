@@ -181,6 +181,9 @@
     <select id="selectDeptUserByDept" resultType="java.lang.String" parameterType="java.lang.String">
         select fk_user_id from re_dept_user where fk_dept_id = #{fkDeptId,jdbcType=VARCHAR}
     </select>
+    <select id="selectDeptIdByUserId" resultType="java.lang.String">
+        select fk_dept_id from re_dept_user where fk_user_id = #{fkUserId,jdbcType=VARCHAR}
+    </select>
     <delete id="deleteDeptUserByDeptId" parameterType="java.lang.String">
         delete from re_dept_user where fk_dept_id =#{fkDeptId,jdbcType=VARCHAR}
     </delete>
@@ -202,4 +205,8 @@
        insert into re_dept_user(pk_deptUser_id,fk_dept_id,fk_user_id)
         values (#{pk_deptUser_id},#{fk_dept_id},#{fk_user_id})
     </insert>
+    <!--No problem 删除用户部门    -->
+    <delete id="deleteDeptUserByUserId" parameterType="java.lang.String">
+        delete from re_dept_user where fk_user_id =#{fkUserId,jdbcType=VARCHAR}
+    </delete>
 </mapper>

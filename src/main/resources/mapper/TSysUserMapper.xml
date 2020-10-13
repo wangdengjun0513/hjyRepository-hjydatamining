@@ -7,7 +7,6 @@
         username,
         password,
         last_login_date,
-        fk_dept_id,
         email,
         tel,
         enable_status,
@@ -73,9 +72,6 @@
             </if>
             <if test="lastLoginDate != null">
                 last_login_date,
-            </if>
-            <if test="fkDeptId != null and fkDeptId != ''">
-                fk_dept_id,
             </if>
             <if test="email != null and email != ''">
                 email,
@@ -161,17 +157,11 @@
     <update id="updateById" parameterType="com.hjy.system.entity.TSysUser">
         update t_sys_user
         <set>
-            <if test="username != null and username != '' and username != 'null'">
-                username = #{username,jdbcType=VARCHAR},
-            </if>
             <if test="password != null and password != ''">
                 password = #{password,jdbcType=VARCHAR},
             </if>
             <if test="lastLoginDate != null">
                 last_login_date = #{lastLoginDate,jdbcType=DATE},
-            </if>
-            <if test="fkDeptId != null">
-                fk_dept_id = #{fkDeptId,jdbcType=VARCHAR},
             </if>
             <if test="email != null">
                 email = #{email,jdbcType=VARCHAR},
@@ -230,7 +220,28 @@
     </select>
     <!--No problem 分页-模糊查询用户列表-->
     <select id="selectAllPage" resultType="com.hjy.system.entity.TSysUser">
-        select * from t_sys_user
+        SELECT
+        t_sys_user.*,
+        t_sys_role.role_name as roleName,
+        t_sys_dept.dept_name as deptName
+        FROM
+        t_sys_user
+        INNER JOIN
+        re_user_role
+        ON
+        t_sys_user.pk_user_id = re_user_role.fk_user_id
+        INNER JOIN
+        t_sys_role
+        ON
+        re_user_role.fk_role_id = t_sys_role.pk_role_id
+        INNER JOIN
+        re_dept_user
+        ON
+        t_sys_user.pk_user_id = re_dept_user.fk_user_id
+        INNER JOIN
+        t_sys_dept
+        ON
+        re_dept_user.fk_dept_id = t_sys_dept.pk_dept_id
         where 1=1
         <if test="idcard != null">
             and idcard like '%${idcard}%'

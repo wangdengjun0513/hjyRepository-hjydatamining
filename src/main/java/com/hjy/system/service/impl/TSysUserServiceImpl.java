@@ -17,6 +17,7 @@ import com.hjy.system.entity.ActiveUser;
 import com.hjy.system.entity.ReUserRole;
 import com.hjy.system.dao.TSysUserMapper;
 import com.hjy.system.entity.TSysUser;
+import com.hjy.system.service.TSysDeptService;
 import com.hjy.system.service.TSysRoleService;
 import com.hjy.system.service.TSysUserService;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,8 @@ public class TSysUserServiceImpl implements TSysUserService {
     private TSysUserService tSysUserService;
     @Autowired
     private TSysRoleMapper tSysRoleMapper;
+    @Autowired
+    private TSysDeptService tSysDeptService;
     @Autowired
     private TSysRoleService tSysRoleService;
     /**
@@ -147,6 +150,7 @@ public class TSysUserServiceImpl implements TSysUserService {
 //        pageRequest.setPageSize(pageSize);
         PageHelper.startPage(pageNum, pageSize);
         List<TSysUser> users = tSysUserMapper.selectAllPage(user);
+        System.err.println(users);
         return PageUtils.getPageResult(new PageInfo<TSysUser>(users));
     }
 
@@ -254,7 +258,6 @@ public class TSysUserServiceImpl implements TSysUserService {
         String username = JsonUtil.getStringParam(json,"username");
         user.setUsername(username);
         String fkDeptId = JsonUtil.getStringParam(json,"fkDeptId");
-        user.setFkDeptId(fkDeptId);
         String email = JsonUtil.getStringParam(json,"email");
         user.setEmail(email);
         String tel = JsonUtil.getStringParam(json,"tel");
@@ -276,14 +279,28 @@ public class TSysUserServiceImpl implements TSysUserService {
         user.setModifyTime(new Date());
         String fkRoleId = JsonUtil.getStringParam(json,"roleId");
         //修改用户信息
-        if(fkRoleId != null){
+        if(fkRoleId != null && fkDeptId == null){
             tSysUserMapper.updateById(user);
             //删除原有角色
             tSysUserMapper.deleteUserRoleByUserId(pkUserId);
             ObjectAsyncTask.addUserRoleByUserRole(pkUserId,fkRoleId);
+            return 2;
+        }else if(fkRoleId != null && fkDeptId != null){
+            tSysUserMapper.updateById(user);
+            //删除原有角色
+            tSysUserMapper.deleteUserRoleByUserId(pkUserId);
+            ObjectAsyncTask.addUserRoleByUserRole(pkUserId,fkRoleId);
+            //删除原有部门信息
+            tSysDeptService.deleteDeptUserByUserId(pkUserId);
+            ObjectAsyncTask.addDeptUserByDeptUser(pkUserId,fkDeptId);
+            return 3;
+        }else if(fkRoleId == null && fkDeptId != null){
+            //删除原有部门信息
+            tSysDeptService.deleteDeptUserByUserId(pkUserId);
+            ObjectAsyncTask.addDeptUserByDeptUser(pkUserId,fkDeptId);
+            return 2;
+        }else{
             return 1;
-        }else {
-            return 0;
         }
     }
 
@@ -303,6 +320,8 @@ public class TSysUserServiceImpl implements TSysUserService {
         int i = tSysUserService.deleteById(idStr);
         //删除用户角色表里的用户
         int j = tSysUserService.deleteUserRoleByUserId(idStr);
+        //删除用户角色表里的用户
+        int k = tSysDeptService.deleteDeptUserByUserId(idStr);
         if(i > 0){
             return new CommonResult(200,"success","数据删除成功!",null);
         }else {

@@ -26,6 +26,10 @@ public enum Code {
      */
     C415(415, "Error Type"),
     /*
+    文件过大
+     */
+    C416(416, "The uploaded file is too large"),
+    /*
     Unprocesable entity - [POST/PUT/PATCH]：当创建一个对象时，发生一个验证错误。请求格式正确，但语义错误。此时错误描述信息中最好有错误详情。
      */
     C422(422, "Unprocesable entity "),

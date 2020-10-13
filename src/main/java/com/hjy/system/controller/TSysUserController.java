@@ -138,6 +138,10 @@ public class TSysUserController {
             jsonObject2.put("roles",roles);
             String role = tSysRoleService.selectRoleIdByUserId(idStr);
             jsonObject2.put("roleId",role);
+            List<TSysDept> depts = tSysDeptService.selectAll();
+            jsonObject2.put("depts",depts);
+            String deptId = tSysDeptService.selectDeptIdByUserId(idStr);
+            jsonObject2.put("deptId",deptId);
             return new CommonResult(200,"success","数据获取成功!",jsonObject2);
         } catch (Exception e) {
             String message = "数据获取失败";
@@ -157,7 +161,7 @@ public class TSysUserController {
         try {
             //
             int i = tSysUserService.updateUser(param);
-            if(i == 1){
+            if(i >= 1){
                 return new CommonResult(200,"success","修改成功!",null);
             }else {
                 return new CommonResult(445,"error","未分配角色，无法修改!",null);
