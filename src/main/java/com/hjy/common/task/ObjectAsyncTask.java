@@ -1,7 +1,9 @@
 package com.hjy.common.task;
 
 import com.hjy.common.utils.IDUtils;
+import com.hjy.system.entity.ReDeptUser;
 import com.hjy.system.entity.ReUserRole;
+import com.hjy.system.service.TSysDeptService;
 import com.hjy.system.service.TSysParamService;
 import com.hjy.system.service.TSysRoleService;
 import com.hjy.system.service.TSysUserService;
@@ -21,6 +23,8 @@ public class ObjectAsyncTask {
     private TSysUserService tSysUserService;
     @Autowired
     private TSysRoleService tSysRoleService;
+    @Autowired
+    private TSysDeptService tSysDeptService;
 
     private static ObjectAsyncTask ntClient;
 
@@ -45,6 +49,14 @@ public class ObjectAsyncTask {
         ntClient.tSysRoleService.distributeMenu(fk_role_id,idList);
     }
 
+    public static void addDeptUserByDeptUser(String pkUserId, String deptId) {
+        ReDeptUser deptUser = new ReDeptUser();
+        deptUser.setPk_deptUser_id(IDUtils.currentTimeMillis());
+        deptUser.setFk_user_id(pkUserId);
+        deptUser.setFk_dept_id(deptId);
+        ntClient.tSysDeptService.addDeptUserByDeptUser(deptUser);
+    }
+
     //初始化所有服务
     @PostConstruct
     public void init() {
@@ -52,5 +64,6 @@ public class ObjectAsyncTask {
         ntClient.tSysParamService = this.tSysParamService;
         ntClient.tSysUserService = this.tSysUserService;
         ntClient.tSysRoleService = this.tSysRoleService;
+        ntClient.tSysDeptService = this.tSysDeptService;
     }
 }

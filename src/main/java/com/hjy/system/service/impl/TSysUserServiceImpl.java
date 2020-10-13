@@ -217,18 +217,31 @@ public class TSysUserServiceImpl implements TSysUserService {
         tSysUserMapper.insertSelective(tSysUser);
         //是否直接分配角色
         String roleId = JsonUtil.getStringParam(json,"roleId");
-        if(roleId == null){
+        //是否直接分配部门
+        String deptId = JsonUtil.getStringParam(json,"deptId");
+        if(roleId == null && deptId == null){
             result.put("code",201);
             result.put("status","success");
             result.put("message","添加用户成功,但暂未分配角色，无法使用！");
-            return result;
-        }else {
+        }else if(roleId == null && deptId != null) {
+            ObjectAsyncTask.addDeptUserByDeptUser(pkUserId,deptId);
+            result.put("code",202);
+            result.put("status","success");
+            result.put("message","添加用户成功,分配部门成功，但暂未分配角色，无法使用！");
+        }else if(roleId != null && deptId == null) {
             ObjectAsyncTask.addUserRoleByUserRole(pkUserId,roleId);
+            result.put("code",203);
+            result.put("status","success");
+            result.put("message","添加用户与分配角色成功,暂未分配部门！");
+        }
+        else if(roleId != null && deptId != null) {
+            ObjectAsyncTask.addUserRoleByUserRole(pkUserId,roleId);
+            ObjectAsyncTask.addDeptUserByDeptUser(pkUserId,deptId);
             result.put("code",200);
             result.put("status","success");
-            result.put("message","添加用户与分配角色成功");
-            return result;
+            result.put("message","添加用户、分配角色与分配部门成功！");
         }
+        return result;
     }
 
     @Override

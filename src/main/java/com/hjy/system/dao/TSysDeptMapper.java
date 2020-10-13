@@ -73,4 +73,8 @@ public interface TSysDeptMapper {
      * 批量添加部门用户
      */
     int addDeptUserByList(@Param("idList")List<ReDeptUser> idList);
+
+    List<TSysDept> selectAllIdAndName();
+
+    void addDeptUserByDeptUser(ReDeptUser deptUser);
 }

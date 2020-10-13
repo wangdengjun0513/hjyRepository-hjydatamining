@@ -2,7 +2,9 @@ package com.hjy.system.service.impl;
 
 
 import com.hjy.common.auth.TokenGenerator;
+import com.hjy.common.domin.CommonResult;
 import com.hjy.common.utils.DateUtil;
+import com.hjy.common.utils.file.MyFileUtil;
 import com.hjy.system.dao.TSysRoleMapper;
 import com.hjy.system.dao.TSysTokenMapper;
 import com.hjy.system.dao.TSysUserMapper;
@@ -10,6 +12,7 @@ import com.hjy.system.entity.*;
 import com.hjy.system.service.ShiroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -73,6 +76,14 @@ public class ShiroServiceImpl implements ShiroService {
     @Override
     public String selectIpByUsername(String username) {
         return tSysTokenMapper.selectIpByUsername(username);
+    }
+
+    @Override
+    public CommonResult insertFile(String username, MultipartFile[] files) {
+        if(files != null){
+            String [] strings = MyFileUtil.FileUtil(username,files);
+        }
+        return null;
     }
 
     /**

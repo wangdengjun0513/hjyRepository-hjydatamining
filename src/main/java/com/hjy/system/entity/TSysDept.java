@@ -17,7 +17,7 @@ public class TSysDept implements Serializable {
     /**
      * 部门主键id
      */
-    private Integer pkDeptId;
+    private String pkDeptId;
     /**
      * 部门名称
      */

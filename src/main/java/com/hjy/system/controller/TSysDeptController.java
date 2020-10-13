@@ -2,6 +2,7 @@ package com.hjy.system.controller;
 
 import com.hjy.common.domin.CommonResult;
 import com.hjy.common.exception.FebsException;
+import com.hjy.common.utils.JsonUtil;
 import com.hjy.system.entity.TSysDept;
 import com.hjy.system.entity.TSysRole;
 import com.hjy.system.entity.TSysUser;
@@ -41,7 +42,8 @@ public class TSysDeptController {
     public CommonResult tSysDeptAddPage() throws FebsException {
         try {
             //
-            return new CommonResult(200,"success","成功!",null);
+            List<TSysDept> list = tSysDeptService.selectAllIdAndName();
+            return new CommonResult(200,"success","成功!",list);
         } catch (Exception e) {
             String message = "失败";
             log.error(message, e);
@@ -119,10 +121,10 @@ public class TSysDeptController {
             List<TSysUser> tSysUserList = tSysUserService.selectAll();
             jsonObject.put("userList",tSysUserList);
             //查询已分配的用户部门并进行回显
-            List<String> userRoleList = tSysDeptService.selectDeptUser_userIded();
-            List<String> userRoleList2 = tSysDeptService.selectDeptUserByDept(deptIdStr);
-            jsonObject.put("ids",userRoleList);
-            jsonObject.put("idsFP",userRoleList2);
+            List<String> deptUserList = tSysDeptService.selectDeptUser_userIded();
+            List<String> deptUserList2 = tSysDeptService.selectDeptUserByDept(deptIdStr);
+            jsonObject.put("ids",deptUserList);
+            jsonObject.put("idsFP",deptUserList2);
             return new CommonResult(200,"success","获取部门已分配用户成功!",jsonObject);
         } catch (Exception e) {
             String message = "获取部门已分配用户失败";
@@ -142,11 +144,11 @@ public class TSysDeptController {
         String userIdsStr = jsonArray.toString();
         List<String> idList = JSONArray.parseArray(userIdsStr,String.class);
         try {
-            //删除原有的部门及用户角色
+            //删除原有的部门及用户
             tSysDeptService.deleteDeptUserByDeptId(fk_dept_id);
             //添加部门用户
             tSysDeptService.addDeptUserByList(fk_dept_id,idList);
-            return new CommonResult(200,"success","部门添加用户成功!",jsonObject);
+            return new CommonResult(200,"success","部门添加用户成功!",null);
         } catch (Exception e) {
             String message = "部门添加用户失败";
             log.error(message, e);
@@ -157,14 +159,18 @@ public class TSysDeptController {
      * 4 通过主键查询单条数据
      * @return 单条数据
      */
-    @GetMapping("/system/dept/getOne")
-    public CommonResult tSysDeptgetOne(@RequestBody String parm) throws FebsException{
-        JSONObject jsonObject = JSON.parseObject(parm);
-        String idStr=String.valueOf(jsonObject.get("pk_id"));
+    @PostMapping("/system/dept/getOne")
+    public CommonResult tSysDeptgetOne(@RequestBody String param) throws FebsException{
+        JSONObject json = JSON.parseObject(param);
+        String idStr= JsonUtil.getStringParam(json,"pk_id");
         try {
             //
+            JSONObject jsonObject = new JSONObject();
             TSysDept tSysDept = tSysDeptService.selectById(idStr);
-            return new CommonResult(200,"success","数据获取成功!",tSysDept);
+            jsonObject.put("dept",tSysDept);
+            List<TSysDept> list = tSysDeptService.selectAllIdAndName();
+            jsonObject.put("depts",list);
+            return new CommonResult(200,"success","数据获取成功!",jsonObject);
         } catch (Exception e) {
             String message = "数据获取失败";
             log.error(message, e);
@@ -183,7 +189,8 @@ public class TSysDeptController {
         try {
             //
             tSysDeptService.updateById(tSysDept);
-            return new CommonResult(200,"success","修改成功!",null);
+            TSysDept tSysDept2 = tSysDeptService.selectById(tSysDept.getPkDeptId());
+            return new CommonResult(200,"success","修改成功!",tSysDept2);
         } catch (Exception e) {
             String message = "修改失败";
             log.error(message, e);

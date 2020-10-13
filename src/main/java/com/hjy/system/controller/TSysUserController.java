@@ -50,15 +50,12 @@ public class TSysUserController {
     public CommonResult tSysUserAddPage() throws FebsException {
         try {
             //查询所有单位列表
-            List<TSysDept> depts = tSysDeptService.selectAll();
+            List<TSysDept> depts = tSysDeptService.selectAllIdAndName();
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("deptList",depts);
             //所有角色信息
             List<TSysRole> roleList = tSysRoleService.selectAll();
             jsonObject.put("roleList",roleList);
-//            //所有权限信息
-//            List<TSysPerms> perms = tSysPermsService.selectAll();
-//            jsonObject.put("permsList",perms);
             return new CommonResult(200,"success","成功!",jsonObject);
         } catch (Exception e) {
             String message = "失败";

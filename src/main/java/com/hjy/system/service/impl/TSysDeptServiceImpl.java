@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +44,9 @@ public class TSysDeptServiceImpl implements TSysDeptService {
     @Transactional()
     @Override
     public int insert(TSysDept tSysDept) throws Exception {
+        tSysDept.setPkDeptId(IDUtils.currentTimeMillis());
+        tSysDept.setCreateTime(new Date());
+        tSysDept.setModifyTime(new Date());
         return tSysDeptMapper.insertSelective(tSysDept);
     }
 
@@ -122,5 +126,15 @@ public class TSysDeptServiceImpl implements TSysDeptService {
             deptUsers.add(deptUser);
         }
         return tSysDeptMapper.addDeptUserByList(deptUsers);
+    }
+
+    @Override
+    public List<TSysDept> selectAllIdAndName() {
+        return tSysDeptMapper.selectAllIdAndName();
+    }
+
+    @Override
+    public void addDeptUserByDeptUser(ReDeptUser deptUser) {
+        tSysDeptMapper.addDeptUserByDeptUser(deptUser);
     }
 }

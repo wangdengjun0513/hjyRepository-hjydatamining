@@ -1,6 +1,7 @@
 package com.hjy.system.service;
 
 import com.hjy.common.domin.CommonResult;
+import com.hjy.system.entity.ReDeptUser;
 import com.hjy.system.entity.TSysDept;
 
 import java.util.List;
@@ -69,6 +70,10 @@ public interface TSysDeptService {
     int deleteDeptUserByDeptId(String fk_dept_id);
     //添加部门用户
     int addDeptUserByList(String fk_dept_id, List<String> idList);
+
+    List<TSysDept> selectAllIdAndName();
+
+    void addDeptUserByDeptUser(ReDeptUser deptUser);
 
 //    CommonResult addUser(String parm);
 //

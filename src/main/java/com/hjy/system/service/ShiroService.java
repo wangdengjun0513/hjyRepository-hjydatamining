@@ -1,10 +1,12 @@
 package com.hjy.system.service;
 
 
+import com.hjy.common.domin.CommonResult;
 import com.hjy.system.entity.SysToken;
 import com.hjy.system.entity.TSysPerms;
 import com.hjy.system.entity.TSysRole;
 import com.hjy.system.entity.TSysUser;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -49,4 +51,6 @@ public interface ShiroService {
     Map<String, Object> selectIndexData(HttpServletResponse resp);
 
      String selectIpByUsername(String username);
+     //文件上传
+    CommonResult insertFile(String username, MultipartFile[] files);
 }
