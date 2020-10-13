@@ -74,6 +74,10 @@ public interface TSysDeptService {
     List<TSysDept> selectAllIdAndName();
 
     void addDeptUserByDeptUser(ReDeptUser deptUser);
+    //删除该用户的已分配的部门
+    int deleteDeptUserByUserId(String pkUserId);
+
+    String selectDeptIdByUserId(String idStr);
 
 //    CommonResult addUser(String parm);
 //

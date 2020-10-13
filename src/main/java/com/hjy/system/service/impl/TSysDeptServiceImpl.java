@@ -137,4 +137,14 @@ public class TSysDeptServiceImpl implements TSysDeptService {
     public void addDeptUserByDeptUser(ReDeptUser deptUser) {
         tSysDeptMapper.addDeptUserByDeptUser(deptUser);
     }
+
+    @Override
+    public int deleteDeptUserByUserId(String pkUserId) {
+        return tSysDeptMapper.deleteDeptUserByUserId(pkUserId);
+    }
+
+    @Override
+    public String selectDeptIdByUserId(String idStr) {
+        return tSysDeptMapper.selectDeptIdByUserId(idStr);
+    }
 }

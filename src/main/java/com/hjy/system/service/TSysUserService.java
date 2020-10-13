@@ -78,12 +78,12 @@ public interface TSysUserService {
      */
     Map<String,Object> insertUserAndRole(String param);
     /**
-     * 修改用户且修改角色
+     * 修改用户且修改角色、部门
      */
     int updateUser(String param);
 
     void addUserRoleByUserRole(ReUserRole userRole);
-
+    //删除用户
     CommonResult tSysUserDel(String param);
 
 //    CommonResult distributeRole(String parm);

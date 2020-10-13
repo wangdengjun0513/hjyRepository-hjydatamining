@@ -77,4 +77,8 @@ public interface TSysDeptMapper {
     List<TSysDept> selectAllIdAndName();
 
     void addDeptUserByDeptUser(ReDeptUser deptUser);
+
+    int deleteDeptUserByUserId(@Param("fkUserId")String fkUserId);
+
+    String selectDeptIdByUserId(@Param("fkUserId")String fkUserId);
 }

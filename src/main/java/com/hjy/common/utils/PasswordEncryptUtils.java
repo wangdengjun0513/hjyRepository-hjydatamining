@@ -7,11 +7,10 @@ public class PasswordEncryptUtils {
     public static String MyPasswordEncryptUtil(String username, String password){
         //加密方式
         String algorithmName = "MD5";
-        //盐-先加固定的
-        Object salt = ByteSource.Util.bytes("username");
-//        Object salt = ByteSource.Util.bytes(username);
+        //盐
+        Object salt = ByteSource.Util.bytes(username);
         //hash次数
-        int hashIterations = 1;
+        int hashIterations = 2;
         SimpleHash simpleHash = new SimpleHash(algorithmName, password, salt, hashIterations);
         return simpleHash.toString();
     }

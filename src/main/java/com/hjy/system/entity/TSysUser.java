@@ -31,9 +31,13 @@ public class TSysUser implements Serializable {
      */
     private Date lastLoginDate;
     /**
-     * 部门id
+     * 部门
      */
-    private String fkDeptId;
+    private String deptName;
+    /**
+     * 角色
+     */
+    private String roleName;
     /**
      * 邮箱
      */

@@ -7,6 +7,7 @@ import com.hjy.common.exception.LimitAccessException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.server.NotAcceptableStatusException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -51,7 +53,12 @@ public class GlobalExceptionHandler {
         log.error("HTTP请求内容未找到：", e);
         return new FebsResponse().message(Code.C404.getDesc()).code(Code.C404.getCode().toString()).status(ResponseStat.ERROR.getText());
     }
-
+    @ExceptionHandler(value = MaxUploadSizeExceededException.class)
+    @ResponseStatus(HttpStatus.REQUEST_HEADER_FIELDS_TOO_LARGE)
+    public FebsResponse maxUploadSizeExceededException(Exception e) {
+        log.error("上传文件过大：", e);
+        return new FebsResponse().message(Code.C416.getDesc()).code(Code.C416.getCode().toString()).status(ResponseStat.ERROR.getText());
+    }
 
 //    /**
 //     * 统一处理请求参数校验(实体对象传参,form data方式,request body方式)
