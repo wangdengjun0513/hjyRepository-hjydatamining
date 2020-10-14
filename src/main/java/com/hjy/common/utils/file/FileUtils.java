@@ -1,12 +1,15 @@
 package com.hjy.common.utils.file;
 
 import com.hjy.common.utils.IDUtils;
+import com.hjy.common.utils.PropertiesUtil;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 文件上传工具类
@@ -65,7 +68,7 @@ public  class FileUtils {
             String fileName = file.getOriginalFilename();
             //文件名后缀，即文件类型
             String suffixName = fileName.substring(fileName.lastIndexOf("."));
-            String[] s ={".jpg",".png",".ppt",".pptx",".xls",".xlsx"};
+            String[] s ={".jpg",".png",".jpeg",".gif"};
             if(ArrayUtils.contains(s,suffixName.toLowerCase())){
                 return true;
             }else {
@@ -74,8 +77,35 @@ public  class FileUtils {
         }
         return false;
     }
-   //文件保存工具
-    public static String fileUpload(String upLoadPath, MultipartFile file,String username){
+
+    /**
+     * 批量上传文件
+     * @param files
+     * @param username
+     * @return
+     */
+    public static Map<String,Object> fileBatchUpload(MultipartFile[] files, String username){
+        Map<String,Object> pathMap = new HashMap<String,Object>();
+        if(files!=null && files.length>0){
+            for(int i = 0;i < files.length; i++){
+                MultipartFile file = files[i];
+                if(!file.isEmpty()){
+                    String filePath = fileUpload(file,username);
+                    pathMap.put("path"+i,filePath);
+                }
+            }
+        }
+        return pathMap;
+    }
+
+    /**
+     * 单文件上传
+     * @param file
+     * @param username
+     * @return
+     */
+    public static String fileUpload(MultipartFile file,String username){
+        String upLoadPath = PropertiesUtil.getValue("file.upload.path");
         String fileName = file.getOriginalFilename();
         //文件名后缀，即文件类型
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
