@@ -84,14 +84,14 @@ public  class FileUtils {
      * @param username
      * @return
      */
-    public static Map<String,Object> fileBatchUpload(MultipartFile[] files, String username){
+    public static Map<String,Object> fileBatchUpload(MultipartFile[] files, String username,String url){
         Map<String,Object> pathMap = new HashMap<String,Object>();
         if(files!=null && files.length>0){
             for(int i = 0;i < files.length; i++){
                 MultipartFile file = files[i];
                 if(!file.isEmpty()){
                     String filePath = fileUpload(file,username);
-                    pathMap.put("path"+i,filePath);
+                    pathMap.put("path"+url+i,filePath);
                 }
             }
         }
@@ -105,7 +105,13 @@ public  class FileUtils {
      * @return
      */
     public static String fileUpload(MultipartFile file,String username){
-        String upLoadPath = PropertiesUtil.getValue("file.upload.path");
+        String upLoadPath = "";
+        String os = System.getProperty("os.name");
+        if (os.toLowerCase().startsWith("win")) {
+            upLoadPath = PropertiesUtil.getValue("file.upload.path.win");
+        } else {
+            upLoadPath = PropertiesUtil.getValue("file.upload.path.other");
+        }
         String fileName = file.getOriginalFilename();
         //文件名后缀，即文件类型
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
@@ -126,7 +132,7 @@ public  class FileUtils {
             file.transferTo(saveFile);
         } catch (Exception e) {
         }
-        return saveFile.getPath();
+        return saveFile.getPath().replace(upLoadPath,"/upload/");
     }
 
 }

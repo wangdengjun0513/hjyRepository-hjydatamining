@@ -9,9 +9,7 @@ import com.hjy.system.service.fileUpLoadService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,8 +36,9 @@ public class FileUpLoadController {
     @PostMapping("/file/upload/video")
     public CommonResult singleVideoUpLoad(MultipartFile file, HttpServletRequest httpRequest) throws FebsException {
         try {
+            String url="http://"+httpRequest.getServerName()+":"+httpRequest.getServerPort();
             SysToken sysToken=shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
-            return fileUpLoadService.singleVideoUpLoad(file,sysToken.getUsername());
+            return fileUpLoadService.singleVideoUpLoad(file,sysToken.getUsername(),url);
         } catch (Exception e) {
             String message = "上传失败";
             log.error(message, e);
@@ -55,8 +54,9 @@ public class FileUpLoadController {
     @PostMapping("/file/upload/pic")
     public CommonResult singlePicUpLoad(MultipartFile file, HttpServletRequest httpRequest) throws FebsException {
         try {
+            String url="http://"+httpRequest.getServerName()+":"+httpRequest.getServerPort();
             SysToken sysToken=shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
-            return fileUpLoadService.singlePicUpLoad(file,sysToken.getUsername());
+            return fileUpLoadService.singlePicUpLoad(file,sysToken.getUsername(),url);
         } catch (Exception e) {
             String message = "上传失败";
             log.error(message, e);
@@ -74,8 +74,9 @@ public class FileUpLoadController {
     @PostMapping("/file/upload/doc")
     public CommonResult singleDocUpLoad(MultipartFile file, HttpServletRequest httpRequest) throws FebsException {
         try {
+            String url="http://"+httpRequest.getServerName()+":"+httpRequest.getServerPort();
             SysToken sysToken=shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
-            return fileUpLoadService.singleDocUpLoad(file,sysToken.getUsername());
+            return fileUpLoadService.singleDocUpLoad(file,sysToken.getUsername(),url);
         } catch (Exception e) {
             String message = "上传失败";
             log.error(message, e);
@@ -90,8 +91,9 @@ public class FileUpLoadController {
     @PostMapping("/file/upload/batch/video")
     public CommonResult batchVideoUpLoad(MultipartFile[] file, HttpServletRequest httpRequest) throws FebsException {
         try {
+            String url="http://"+httpRequest.getServerName()+":"+httpRequest.getServerPort();
             SysToken sysToken=shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
-            return fileUpLoadService.batchVideoUpLoad(file,sysToken.getUsername());
+            return fileUpLoadService.batchVideoUpLoad(file,sysToken.getUsername(),url);
         } catch (Exception e) {
             String message = "上传失败";
             log.error(message, e);
@@ -106,8 +108,9 @@ public class FileUpLoadController {
     @PostMapping("/file/upload/batch/pic")
     public CommonResult batchPicUpLoad(MultipartFile[] file, HttpServletRequest httpRequest) throws FebsException {
         try {
+            String url="http://"+httpRequest.getServerName()+":"+httpRequest.getServerPort();
             SysToken sysToken=shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
-            return fileUpLoadService.batchPicUpLoad(file,sysToken.getUsername());
+            return fileUpLoadService.batchPicUpLoad(file,sysToken.getUsername(),url);
         } catch (Exception e) {
             String message = "上传失败";
             log.error(message, e);
@@ -122,8 +125,9 @@ public class FileUpLoadController {
     @PostMapping("/file/upload/batch/doc")
     public CommonResult batchDocUpLoad(MultipartFile[] file, HttpServletRequest httpRequest) throws FebsException {
         try {
+            String url="http://"+httpRequest.getServerName()+":"+httpRequest.getServerPort();
             SysToken sysToken=shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
-            return fileUpLoadService.batchDocUpLoad(file,sysToken.getUsername());
+            return fileUpLoadService.batchDocUpLoad(file,sysToken.getUsername(),url);
         } catch (Exception e) {
             String message = "上传失败";
             log.error(message, e);
