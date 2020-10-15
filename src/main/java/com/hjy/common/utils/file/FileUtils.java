@@ -91,7 +91,7 @@ public  class FileUtils {
                 MultipartFile file = files[i];
                 if(!file.isEmpty()){
                     String filePath = fileUpload(file,username);
-                    pathMap.put("path"+url+i,filePath);
+                    pathMap.put("path"+i,url+filePath);
                 }
             }
         }
