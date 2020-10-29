@@ -2,7 +2,8 @@ package com.hjy.business.service;
 
 import com.hjy.business.entity.TCustomer;
 import com.hjy.common.domin.CommonResult;
-import com.hjy.system.entity.SysToken;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * (TCustomer)表服务接口
@@ -18,24 +19,25 @@ public interface TCustomerService {
      * @param parm 主键
      * @return 实例对象
      */
-    CommonResult selectById(String parm)throws Exception;
+    CommonResult selectById(String parm);
 
 
     /**
      * 新增数据
+     *
      * @param tCustomer 实例对象
      * @return 实例对
      */
-    CommonResult insertSelective(TCustomer tCustomer, SysToken sysToken) throws Exception;
+    CommonResult insertSelective(TCustomer tCustomer, HttpServletRequest httpRequest);
 
     /**
      * 修改数据
+     *
      * @param tCustomer
-     * @param sysToken
      * @return
-     * @throws Exception
+     * @
      */
-    CommonResult updateById(TCustomer tCustomer,SysToken sysToken) throws Exception;
+    CommonResult updateById(TCustomer tCustomer, HttpServletRequest httpRequest);
 
     /**
      * 通过主键删除数据
@@ -43,10 +45,9 @@ public interface TCustomerService {
      * @param parm 主键
      * @return 是否成功
      */
-    CommonResult deleteById(String parm) throws Exception;
+    CommonResult deleteById(String parm);
 
     /**
-     *
      * @param param
      * @return
      */
