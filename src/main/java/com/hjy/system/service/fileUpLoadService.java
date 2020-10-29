@@ -3,6 +3,8 @@ package com.hjy.system.service;
 import com.hjy.common.domin.CommonResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 文件上传服务接口
  *
@@ -14,51 +16,57 @@ public interface fileUpLoadService {
 
     /**
      * 单个上传视频
+     *
      * @param file
      * @return
-     * @throws Exception
+     * @
      */
-    CommonResult singleVideoUpLoad(MultipartFile file,String username,String url)throws Exception;
+    CommonResult singleVideoUpLoad(MultipartFile file, HttpServletRequest httpRequest);
 
     /**
      * 单个上传图片
+     *
      * @param file
      * @return
-     * @throws Exception
+     * @
      */
-    CommonResult singlePicUpLoad(MultipartFile file,String username,String url)throws Exception;
+    CommonResult singlePicUpLoad(MultipartFile file, HttpServletRequest httpRequest);
 
     /**
      * 单个上传文档
+     *
      * @param file
      * @return
-     * @throws Exception
+     * @
      */
-    CommonResult singleDocUpLoad(MultipartFile file,String username,String url)throws Exception;
+    CommonResult singleDocUpLoad(MultipartFile file, HttpServletRequest httpRequest);
 
     /**
      * 批量上传视频
+     *
      * @param file
      * @return
-     * @throws Exception
+     * @
      */
-    CommonResult batchVideoUpLoad(MultipartFile[] file,String username,String url)throws Exception;
+    CommonResult batchVideoUpLoad(MultipartFile[] file, HttpServletRequest httpRequest);
 
     /**
      * 批量上传图片
+     *
      * @param file
      * @return
-     * @throws Exception
+     * @
      */
-    CommonResult batchPicUpLoad(MultipartFile[] file,String username,String url)throws Exception;
+    CommonResult batchPicUpLoad(MultipartFile[] file, HttpServletRequest httpRequest);
 
     /**
      * 批量上传文档
+     *
      * @param file
      * @return
-     * @throws Exception
+     * @
      */
-    CommonResult batchDocUpLoad(MultipartFile[] file,String username,String url)throws Exception;
+    CommonResult batchDocUpLoad(MultipartFile[] file, HttpServletRequest httpRequest);
 
 
 }

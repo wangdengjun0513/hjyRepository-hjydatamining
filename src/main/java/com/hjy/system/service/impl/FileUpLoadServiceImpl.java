@@ -1,11 +1,16 @@
 package com.hjy.system.service.impl;
 
 import com.hjy.common.domin.CommonResult;
+import com.hjy.common.utils.TokenUtil;
 import com.hjy.common.utils.file.FileUtils;
+import com.hjy.system.entity.SysToken;
+import com.hjy.system.service.ShiroService;
 import com.hjy.system.service.fileUpLoadService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,70 +23,84 @@ import java.util.Map;
 @Service
 public class FileUpLoadServiceImpl implements fileUpLoadService {
 
+    @Autowired
+    private ShiroService shiroService;
 
     @Override
-    public CommonResult singleVideoUpLoad(MultipartFile file,String username,String url) throws Exception {
-        if(!FileUtils.isVideoFile(file)){
-            return new CommonResult(201,"success","非视频格式文件，不能上传", null);
+    public CommonResult singleVideoUpLoad(MultipartFile file, HttpServletRequest httpRequest) {
+        String url = "http://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort();
+        SysToken sysToken = shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+        if (!FileUtils.isVideoFile(file)) {
+            return new CommonResult(201, "success", "非视频格式文件，不能上传", null);
         }
-        Map<String,Object> pathMap = new HashMap<String,Object>();
-        pathMap.put("path",url+FileUtils.fileUpload(file,username));
-        return new CommonResult(200,"success","上传成功!", pathMap);
+        Map<String, Object> pathMap = new HashMap<String, Object>();
+        pathMap.put("path", url + FileUtils.fileUpload(file, sysToken.getUsername()));
+        return new CommonResult(200, "success", "上传成功!", pathMap);
     }
 
     @Override
-    public CommonResult singlePicUpLoad(MultipartFile file,String username,String url) throws Exception {
-        if(!FileUtils.isPicFile(file)){
-            return new CommonResult(201,"success","非图片格式文件，不能上传", null);
+    public CommonResult singlePicUpLoad(MultipartFile file, HttpServletRequest httpRequest) {
+        String url = "http://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort();
+        SysToken sysToken = shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+        if (!FileUtils.isPicFile(file)) {
+            return new CommonResult(201, "success", "非图片格式文件，不能上传", null);
         }
-        Map<String,Object> pathMap = new HashMap<String,Object>();
-        pathMap.put("path",url+FileUtils.fileUpload(file,username));
-        return new CommonResult(200,"success","上传成功!", pathMap);
+        Map<String, Object> pathMap = new HashMap<String, Object>();
+        pathMap.put("path", url + FileUtils.fileUpload(file, sysToken.getUsername()));
+        return new CommonResult(200, "success", "上传成功!", pathMap);
     }
 
     @Override
-    public CommonResult singleDocUpLoad(MultipartFile file,String username,String url) throws Exception {
-        if(!FileUtils.isDocFile(file)){
-            return new CommonResult(201,"success","非文档格式文件，不能上传", null);
+    public CommonResult singleDocUpLoad(MultipartFile file, HttpServletRequest httpRequest) {
+        String url = "http://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort();
+        SysToken sysToken = shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+        if (!FileUtils.isDocFile(file)) {
+            return new CommonResult(201, "success", "非文档格式文件，不能上传", null);
         }
-        Map<String,Object> pathMap = new HashMap<String,Object>();
-        pathMap.put("path",url+FileUtils.fileUpload(file,username));
-        return new CommonResult(200,"success","上传成功!", pathMap);
+        Map<String, Object> pathMap = new HashMap<String, Object>();
+        pathMap.put("path", url + FileUtils.fileUpload(file, sysToken.getUsername()));
+        return new CommonResult(200, "success", "上传成功!", pathMap);
     }
 
     /**
      * 批量上传视频
+     *
      * @param file
-     * @param username
      * @return
-     * @throws Exception
+     * @
      */
     @Override
-    public CommonResult batchVideoUpLoad(MultipartFile[] file,String username,String url) throws Exception {
-        return new CommonResult(200,"success","上传成功!", FileUtils.fileBatchUpload(file,username,url));
+    public CommonResult batchVideoUpLoad(MultipartFile[] file, HttpServletRequest httpRequest) {
+        String url = "http://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort();
+        SysToken sysToken = shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+        return new CommonResult(200, "success", "上传成功!", FileUtils.fileBatchUpload(file, sysToken.getUsername(), url));
     }
 
     /**
      * 批量上传图片
+     *
      * @param file
-     * @param username
      * @return
-     * @throws Exception
+     * @
      */
     @Override
-    public CommonResult batchPicUpLoad(MultipartFile[] file,String username,String url) throws Exception {
-        return new CommonResult(200,"success","上传成功!", FileUtils.fileBatchUpload(file,username,url));
+    public CommonResult batchPicUpLoad(MultipartFile[] file, HttpServletRequest httpRequest) {
+        String url = "http://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort();
+        SysToken sysToken = shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+        return new CommonResult(200, "success", "上传成功!", FileUtils.fileBatchUpload(file, sysToken.getUsername(), url));
     }
 
     /**
      * 批量上传文档
+     *
      * @param file
-     * @param username
      * @return
-     * @throws Exception
+     * @
      */
     @Override
-    public CommonResult batchDocUpLoad(MultipartFile[] file,String username,String url) throws Exception {
-        return new CommonResult(200,"success","上传成功!", FileUtils.fileBatchUpload(file,username,url));
+    public CommonResult batchDocUpLoad(MultipartFile[] file, HttpServletRequest httpRequest) {
+        String url = "http://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort();
+        SysToken sysToken = shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+        return new CommonResult(200, "success", "上传成功!", FileUtils.fileBatchUpload(file, sysToken.getUsername(), url));
     }
 }
