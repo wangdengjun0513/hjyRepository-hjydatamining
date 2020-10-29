@@ -43,6 +43,9 @@ public class ShiroConfig {
         filterMap.put("/", "anon");
         filterMap.put("/logout", "anon");
         filterMap.put("/upload/**", "anon");
+        filterMap.put("/business/*/list", "anon");
+        filterMap.put("/business/*/addPage", "anon");
+        filterMap.put("/business/*/getOne", "anon");
         // 除了以上路径，其他都需要权限验证
         filterMap.put("/**", "auth");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
