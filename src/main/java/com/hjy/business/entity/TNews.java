@@ -32,7 +32,7 @@ public class TNews implements Serializable {
      */
     private String newsCover;
     /**
-     * 新闻状态1已上线0未上线
+     * 新闻状态1已上线2未上线
      */
     private int newsStatus;
     /**
