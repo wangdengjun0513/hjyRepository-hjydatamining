@@ -36,7 +36,7 @@ public class TRecruit implements Serializable {
      */
     private int recruitNumber;
     /**
-     * recruit状态1已发布0未发布
+     * recruit状态1已发布2未发布
      */
     private int recruitStatus;
     /**

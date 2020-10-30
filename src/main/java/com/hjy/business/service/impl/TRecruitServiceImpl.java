@@ -59,6 +59,9 @@ public class TRecruitServiceImpl implements TRecruitService {
     @Override
     public CommonResult insertSelective(TRecruit tRecruit, HttpServletRequest httpRequest) {
         SysToken sysToken = shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+        if (tRecruit.getRecruitStatus() != 1 && tRecruit.getRecruitStatus() != 2) {
+            return new CommonResult(440, "error", "请选择状态!", null);
+        }
         tRecruit.setPkRecruitId(IDUtils.getUUID());
         tRecruit.setCreateDate(new Date());
         tRecruit.setCreateUserId(sysToken.getFkUserId());
@@ -78,6 +81,9 @@ public class TRecruitServiceImpl implements TRecruitService {
     @Override
     public CommonResult updateById(TRecruit tRecruit, HttpServletRequest httpRequest) {
         SysToken sysToken = shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+        if (tRecruit.getRecruitStatus() != 1 && tRecruit.getRecruitStatus() != 2) {
+            return new CommonResult(440, "error", "请选择状态!", null);
+        }
         tRecruit.setLastModifyDate(new Date());
         tRecruit.setLastModifyUserId(sysToken.getFkUserId());
         tRecruitMapper.updateById(tRecruit);

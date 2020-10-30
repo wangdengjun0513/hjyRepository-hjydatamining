@@ -60,6 +60,9 @@ public class TNewsServiceImpl implements TNewsService {
     @Override
     public CommonResult insertSelective(TNews tNews, HttpServletRequest httpRequest, Integer newsType) {
         SysToken sysToken = shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+        if (tNews.getNewsStatus() != 1 && tNews.getNewsStatus() != 2) {
+            return new CommonResult(440, "error", "请选择状态!", null);
+        }
         tNews.setPkNewsId(IDUtils.getUUID());
         tNews.setNewsType(newsType);
         tNews.setCreateDate(new Date());
@@ -80,6 +83,9 @@ public class TNewsServiceImpl implements TNewsService {
     @Override
     public CommonResult updateById(TNews tNews, HttpServletRequest httpRequest) {
         SysToken sysToken = shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+        if (tNews.getNewsStatus() != 1 && tNews.getNewsStatus() != 2) {
+            return new CommonResult(440, "error", "请选择状态!", null);
+        }
         tNews.setLastModifyDate(new Date());
         tNews.setLastModifyUserId(sysToken.getFkUserId());
         tNewsMapper.updateById(tNews);

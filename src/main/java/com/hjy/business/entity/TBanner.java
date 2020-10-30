@@ -40,7 +40,7 @@ public class TBanner implements Serializable {
      */
     private String bannerMobileUrl;
     /**
-     * banner状态1已上线0未上线
+     * banner状态1已上线2未上线
      */
     private int bannerStatus;
     /**

@@ -59,6 +59,9 @@ public class TBannerServiceImpl implements TBannerService {
     @Override
     public CommonResult insertSelective(TBanner tBanner, HttpServletRequest httpRequest) {
         SysToken sysToken = shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+        if (tBanner.getBannerStatus() != 1 && tBanner.getBannerStatus() != 2) {
+            return new CommonResult(440, "error", "请选择状态!", null);
+        }
         tBanner.setPkBannerId(IDUtils.getUUID());
         tBanner.setCreateDate(new Date());
         tBanner.setCreateUserId(sysToken.getFkUserId());
@@ -78,6 +81,9 @@ public class TBannerServiceImpl implements TBannerService {
     @Override
     public CommonResult updateById(TBanner tBanner, HttpServletRequest httpRequest) {
         SysToken sysToken = shiroService.findByToken(TokenUtil.getRequestToken(httpRequest));
+        if (tBanner.getBannerStatus() != 1 && tBanner.getBannerStatus() != 2) {
+            return new CommonResult(440, "error", "请选择状态!", null);
+        }
         tBanner.setLastModifyDate(new Date());
         tBanner.setLastModifyUserId(sysToken.getFkUserId());
         tBannerMapper.updateById(tBanner);
